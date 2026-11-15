@@ -1,7 +1,7 @@
 name: SDLC Contract and Demo Verification
 on:
   push:
-    branches: [main]
+    branches: [main, "feature/**"]
   pull_request:
   workflow_dispatch:
 
@@ -21,18 +21,24 @@ jobs:
           python-version: "3.11"
       - name: Compile sources
         run: python -m compileall -q sdlc tests
-      - name: Run framework unit tests
+      - name: Run framework unit tests and routing evaluations
         run: python -m unittest discover -s tests -v
+      - name: Validate playbook catalog and route
+        run: |
+          python -m sdlc.mode catalog
+          python -m sdlc.mode route --goal "測試跨系統人工覆核"
       - name: Validate example contracts
         run: |
           python -m sdlc.cli validate --task contracts/examples/verification.json
           python -m sdlc.cli validate --task contracts/examples/development.json
           python -m sdlc.cli validate --task contracts/examples/investigation.json
-      - name: Check route and scenario execution
+      - name: Check worklist creation and scenario execution
         run: |
+          python -m sdlc.mode start --task contracts/examples/verification.json
+          python -m sdlc.mode start --task contracts/examples/development.json
           python -m sdlc.cli plan --task contracts/examples/development.json
           python -m sdlc.cli verify --task contracts/examples/verification.json --output-dir artifacts
-      - name: Upload synthetic evidence
+      - name: Upload synthetic evidence and worklists
         if: always()
         uses: actions/upload-artifact@v4
         with:

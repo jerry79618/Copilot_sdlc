@@ -1,0 +1,487 @@
+{
+  "schema_version": 1,
+  "playbooks": [
+    {
+      "id": "feature",
+      "intent": "development",
+      "description": "Create new behavior: explore, define proof, design, implement, verify and submit for review",
+      "stages": [
+        {
+          "id": "understand",
+          "title": "Confirm scope, constraints and acceptance criteria",
+          "skills": [
+            "task-routing"
+          ],
+          "gate": "G1"
+        },
+        {
+          "id": "proof-plan",
+          "title": "Define observable evidence and test strategy",
+          "skills": [
+            "verification"
+          ],
+          "gate": "G2"
+        },
+        {
+          "id": "design",
+          "title": "Explore code and decide architecture",
+          "skills": [
+            "development"
+          ]
+        },
+        {
+          "id": "implement",
+          "title": "Implement approved scoped change",
+          "skills": [
+            "development"
+          ]
+        },
+        {
+          "id": "unit-contract",
+          "title": "Run unit and contract tests",
+          "skills": [
+            "development"
+          ]
+        },
+        {
+          "id": "dependencies",
+          "title": "Resolve cross-system prerequisites",
+          "skills": [
+            "cross-system-data"
+          ],
+          "optional": true
+        },
+        {
+          "id": "readiness",
+          "title": "Confirm runtime data and environment",
+          "skills": [
+            "cross-system-data"
+          ],
+          "gate": "G3"
+        },
+        {
+          "id": "runtime-verify",
+          "title": "Execute test and capture actual evidence",
+          "skills": [
+            "verification"
+          ],
+          "gate": "G4"
+        },
+        {
+          "id": "independent-review",
+          "title": "Independent review of diff and evidence",
+          "skills": [
+            "failure-analysis"
+          ],
+          "gate": "G5"
+        },
+        {
+          "id": "handoff",
+          "title": "Prepare PR and approval request (do not deploy)",
+          "skills": [
+            "task-routing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bug-fix",
+      "intent": "development",
+      "description": "Reproduce a defect before touching implementation, locate root cause, repair and prove",
+      "stages": [
+        {
+          "id": "restate",
+          "title": "Restate observed bug and done condition",
+          "skills": [
+            "task-routing"
+          ],
+          "gate": "G1"
+        },
+        {
+          "id": "reproduce",
+          "title": "Capture failing behavior before code changes",
+          "skills": [
+            "verification"
+          ],
+          "gate": "G2"
+        },
+        {
+          "id": "root-cause",
+          "title": "Trace root cause from evidence",
+          "skills": [
+            "failure-analysis"
+          ]
+        },
+        {
+          "id": "repair",
+          "title": "Apply the smallest authorized fix",
+          "skills": [
+            "development"
+          ]
+        },
+        {
+          "id": "regression",
+          "title": "Add reproduction regression test",
+          "skills": [
+            "development"
+          ]
+        },
+        {
+          "id": "dependencies",
+          "title": "Resolve multi-system fixtures if relevant",
+          "skills": [
+            "cross-system-data"
+          ],
+          "optional": true
+        },
+        {
+          "id": "readiness",
+          "title": "Confirm runtime prerequisites",
+          "skills": [
+            "cross-system-data"
+          ],
+          "gate": "G3"
+        },
+        {
+          "id": "runtime-verify",
+          "title": "Demonstrate failing-before / passing-after evidence",
+          "skills": [
+            "verification"
+          ],
+          "gate": "G4"
+        },
+        {
+          "id": "independent-review",
+          "title": "Review repair and regression evidence",
+          "skills": [
+            "failure-analysis"
+          ],
+          "gate": "G5"
+        },
+        {
+          "id": "handoff",
+          "title": "Prepare reviewed PR, no automatic merge",
+          "skills": [
+            "task-routing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "verification",
+      "intent": "verification",
+      "description": "Test-only verification of existing behavior and multi-system scenarios, no product code changes",
+      "stages": [
+        {
+          "id": "scope",
+          "title": "Read Task Contract and success criteria",
+          "skills": [
+            "task-routing"
+          ],
+          "gate": "G1"
+        },
+        {
+          "id": "feature-map",
+          "title": "Read affected Feature Map and real behavior",
+          "skills": [
+            "verification"
+          ],
+          "gate": "G2"
+        },
+        {
+          "id": "scenario",
+          "title": "Map scenarios, dependencies and order",
+          "skills": [
+            "cross-system-data"
+          ]
+        },
+        {
+          "id": "test-data",
+          "title": "Provision only approved synthetic fixtures or document BLOCKED",
+          "skills": [
+            "cross-system-data"
+          ],
+          "optional": true
+        },
+        {
+          "id": "readiness",
+          "title": "Verify environment, privilege and prerequisites",
+          "skills": [
+            "cross-system-data"
+          ],
+          "gate": "G3"
+        },
+        {
+          "id": "runtime-verify",
+          "title": "Execute approved test runner and assert observations",
+          "skills": [
+            "verification"
+          ],
+          "gate": "G4"
+        },
+        {
+          "id": "review-evidence",
+          "title": "Independently assess evidence and coverage",
+          "skills": [
+            "failure-analysis"
+          ],
+          "gate": "G5"
+        },
+        {
+          "id": "report",
+          "title": "Publish PASS/FAIL/BLOCKED including limitations",
+          "skills": [
+            "verification"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "investigation",
+      "intent": "investigation",
+      "description": "Read-only source, log, feature and behavioral research with evidence",
+      "stages": [
+        {
+          "id": "restate",
+          "title": "Restate question and no-write constraints",
+          "skills": [
+            "task-routing"
+          ],
+          "gate": "G1"
+        },
+        {
+          "id": "discover",
+          "title": "Read relevant code and available feature map",
+          "skills": [
+            "verification"
+          ]
+        },
+        {
+          "id": "evidence",
+          "title": "Collect safe observations, separate facts from hypotheses",
+          "skills": [
+            "failure-analysis"
+          ],
+          "gate": "G2"
+        },
+        {
+          "id": "report",
+          "title": "Return referenced conclusion and unknowns",
+          "skills": [
+            "failure-analysis"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "refactor",
+      "intent": "development",
+      "description": "Structure-only change that must preserve observable behavior",
+      "stages": [
+        {
+          "id": "scope",
+          "title": "Identify unchanged contract and boundaries",
+          "skills": [
+            "task-routing"
+          ],
+          "gate": "G1"
+        },
+        {
+          "id": "baseline",
+          "title": "Record existing behavior before change",
+          "skills": [
+            "verification"
+          ],
+          "gate": "G2"
+        },
+        {
+          "id": "design",
+          "title": "Plan minimal structural change",
+          "skills": [
+            "development"
+          ]
+        },
+        {
+          "id": "implement",
+          "title": "Refactor while preserving behavior",
+          "skills": [
+            "development"
+          ]
+        },
+        {
+          "id": "readiness",
+          "title": "Confirm tests and fixtures ready",
+          "skills": [
+            "cross-system-data"
+          ],
+          "gate": "G3"
+        },
+        {
+          "id": "runtime-verify",
+          "title": "Compare before/after behavior",
+          "skills": [
+            "verification"
+          ],
+          "gate": "G4"
+        },
+        {
+          "id": "review",
+          "title": "Review absence of unintended changes",
+          "skills": [
+            "failure-analysis"
+          ],
+          "gate": "G5"
+        },
+        {
+          "id": "handoff",
+          "title": "Prepare PR for review",
+          "skills": [
+            "task-routing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "performance",
+      "intent": "development",
+      "description": "Measured slowdown: baseline, profile, fix and measure again",
+      "stages": [
+        {
+          "id": "scope",
+          "title": "Define reproducible measured slowdown",
+          "skills": [
+            "task-routing"
+          ],
+          "gate": "G1"
+        },
+        {
+          "id": "baseline",
+          "title": "Collect baseline with measurement conditions",
+          "skills": [
+            "verification"
+          ],
+          "gate": "G2"
+        },
+        {
+          "id": "profile",
+          "title": "Identify observed bottleneck, not guesses",
+          "skills": [
+            "failure-analysis"
+          ]
+        },
+        {
+          "id": "change",
+          "title": "Make approved focused performance improvement",
+          "skills": [
+            "development"
+          ]
+        },
+        {
+          "id": "readiness",
+          "title": "Prepare representative input/environment",
+          "skills": [
+            "cross-system-data"
+          ],
+          "gate": "G3"
+        },
+        {
+          "id": "runtime-verify",
+          "title": "Repeat benchmark and regression checks",
+          "skills": [
+            "verification"
+          ],
+          "gate": "G4"
+        },
+        {
+          "id": "review",
+          "title": "Validate measurement comparability and correctness",
+          "skills": [
+            "failure-analysis"
+          ],
+          "gate": "G5"
+        },
+        {
+          "id": "handoff",
+          "title": "Prepare benchmark evidence and PR",
+          "skills": [
+            "task-routing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "review",
+      "intent": "investigation",
+      "description": "Read-only code or PR review against evidence and declared scope",
+      "stages": [
+        {
+          "id": "scope",
+          "title": "Identify code range and reviewer criteria",
+          "skills": [
+            "task-routing"
+          ],
+          "gate": "G1"
+        },
+        {
+          "id": "inspect",
+          "title": "Inspect changes and contracts without edits",
+          "skills": [
+            "failure-analysis"
+          ]
+        },
+        {
+          "id": "checks",
+          "title": "Validate evidence, tests and known limitations",
+          "skills": [
+            "verification"
+          ],
+          "gate": "G2"
+        },
+        {
+          "id": "report",
+          "title": "Report actionable blocking/nonblocking findings",
+          "skills": [
+            "failure-analysis"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "figure-it-out",
+      "intent": "investigation",
+      "description": "Unknown/complex scope: design a safe, testable plan before authorizing work",
+      "stages": [
+        {
+          "id": "restate",
+          "title": "Restate goal and missing information",
+          "skills": [
+            "task-routing"
+          ],
+          "gate": "G1"
+        },
+        {
+          "id": "discover",
+          "title": "Investigate architecture and unknowns",
+          "skills": [
+            "failure-analysis"
+          ]
+        },
+        {
+          "id": "design-plan",
+          "title": "Propose bounded phases with acceptance evidence",
+          "skills": [
+            "task-routing"
+          ],
+          "gate": "G2"
+        },
+        {
+          "id": "review-plan",
+          "title": "Record authorization questions, do not implement automatically",
+          "skills": [
+            "task-routing"
+          ]
+        }
+      ]
+    }
+  ]
+}

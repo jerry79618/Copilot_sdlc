@@ -5,6 +5,8 @@ description: >
 ---
 
 
+This is a subordinate Skill. Use the **sdlc-mode** Skill as the entry point; the selected Playbook decides when to use task-routing.
+
 ## Flow
 1. Extract goal, intent, risk, system scope, environment, acceptance criteria and permissions.
 2. Prefer explicit user intent. Ambiguous requests: inspect artifacts and ask one consolidated decision question only if necessary.

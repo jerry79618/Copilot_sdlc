@@ -1,0 +1,34 @@
+[
+  {
+    "goal": "新增退貨審核 API",
+    "expected_playbook": "feature"
+  },
+  {
+    "goal": "users report a bug that duplicates their notification",
+    "expected_playbook": "bug-fix"
+  },
+  {
+    "goal": "驗證 A B C 三個跨系統的特殊測試資料",
+    "expected_playbook": "verification"
+  },
+  {
+    "goal": "為什麼登入後快取沒有消失？只調查不要修改程式",
+    "expected_playbook": "investigation"
+  },
+  {
+    "goal": "Refactor legacy payment service, behavior must be identical",
+    "expected_playbook": "refactor"
+  },
+  {
+    "goal": "Improve performance of measured p99 latency",
+    "expected_playbook": "performance"
+  },
+  {
+    "goal": "Review PR 47 without edits",
+    "expected_playbook": "review"
+  },
+  {
+    "goal": "Please help me consider our options",
+    "expected_playbook": "figure-it-out"
+  }
+]

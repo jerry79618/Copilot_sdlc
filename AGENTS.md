@@ -1,5 +1,8 @@
 # Repository rules for all AI agents
 
+**Unified entry**: for new SDLC engineering requests use `.github/skills/sdlc-mode/SKILL.md` and `playbooks/catalog.json`; the `orchestrator` agent must select one playbook and record stage evidence using `python -m sdlc.mode`. Load sub-Skills only when the selected stage requires them. Unclear requests are read-only plans until scope and permissions are established.
+
+
 1. **Verification before completion**: define observable acceptance criteria and required evidence before coding. Never claim external E2E success from `demo` evidence.
 2. **Classify intent first**: development may modify product code; verification and investigation are read-only for product code. A failed test does not by itself authorize development work.
 3. **Discover before changing**: read repository, feature map, business rules, task contract, tests, and relevant implementation.
