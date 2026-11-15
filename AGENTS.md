@@ -17,3 +17,5 @@
 To check a task: `python -m sdlc.cli validate --task <path>`.
 To plan: `python -m sdlc.cli plan --task <path>`.
 To verify the sandbox example: `python -m sdlc.cli verify --task contracts/examples/verification.json`.
+
+For Feature Maps with a Cucumber Binding, use .github/skills/cucumber-authoring/SKILL.md to build real Gherkin and Java Step Definitions, validate links, execute Maven and collect Cucumber evidence. Testing-only never authorizes modifying product code. Mock PASS is not real E2E.

@@ -67,3 +67,6 @@ Read \`playbooks/catalog.json\` or run \`python -m sdlc.mode catalog\`.
 **Important:** This worklist ledger does not call GitHub Copilot automatically;
 Copilot/Orchestrator executes the Skills, while the Python mode checks ordering.
 For multi-system tests, never claim full integration proof from a mock adapter.
+
+## Cucumber-backed Verification
+The scenario and runtime verification stages may load cucumber-authoring Skill to translate a linked Feature Map into runnable Gherkin, Java Step Definitions, JSON/HTML reports and G4 evidence. Validate binding first; do not claim success without actual Cucumber execution.

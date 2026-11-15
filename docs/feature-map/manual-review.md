@@ -24,3 +24,24 @@ This repository has **no UI**. In a future integrated application, document the 
 
 ## Multi-surface / cross-system journey
 `risk_data -> submit -> sync_event`, with assertions on each of the three systems.
+
+## SDLC Cucumber Binding
+
+Machine-readable links for the runnable BDD scenario. The original four sections remain behavioral documentation.
+
+```json
+{
+  "feature_id": "manual-review",
+  "scenario_id": "REVIEW-001",
+  "gherkin": "cucumber/src/test/resources/features/manual-review.feature",
+  "scenario": "scenarios/manual-review.json",
+  "contract": "contracts/examples/verification.json",
+  "fixture": "fixtures/manual-review.json",
+  "adapter": "demo",
+  "systems": [
+    "risk",
+    "application",
+    "sync"
+  ]
+}
+```
