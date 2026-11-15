@@ -73,3 +73,11 @@ The scenario and runtime verification stages may load cucumber-authoring Skill t
 
 ## Banking risk-aware model routing
 Before delegating, run `python -m sdlc.model_policy route --task TASK.json` and inspect `effective_risk`, escalations from `impact_flags`, required reviewers and human approvals. The proposed model roster is in `config/banking-model-policy.json`. Never downgrade risk or substitute models. If the bank's Copilot organization disallows a required model, report BLOCKED. For high risk, use banking-analyst before code, developer-high for implementation, tester for Cucumber, banking-reviewer AND cross-reviewer for independent reviews, plus human release approval. A worklist PASS does not prove these agents actually ran. Run `python -m sdlc.credit_estimate --scenario all` for planning only.
+
+## Pstack-inspired workflow improvements (v0.5)
+- The first step is to follow docs/principles.md and identify the user goal, rather than guessing what implementation is needed.
+- Route to one of 11 Playbooks, including prototype, skill-eval, multi-phase. Stages map to focused Skills; only load what is needed when the stage starts.
+- Read or draft user-facing Feature Map through feature-map-discovery. Drafts are NOT business validation. Use approved Cucumber or app harness to turn observations into evidence.
+- Keep an ordered worklist using python -m sdlc.mode checkpoint --run RUN for pause/resume. BLOCKED captures the specific missing owner/tool/data, not a fake PASS.
+- Before claiming success, run real verification and independent review. Reflect via sdlc.reflect and test routing regressions with sdlc.quality_eval; a deterministic eval is not an LLM eval.
+- Never claim Cursor /poteto-mode, Swarm, Arena, autonomous GitHub merge, or dynamically chosen models are natively implemented here.

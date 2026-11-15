@@ -1,6 +1,6 @@
-# Copilot SDLC — Enterprise AI SDLC v0.4
+# Copilot SDLC — Enterprise AI SDLC v0.5
 
-**GitHub Copilot CLI-first framework: goal-first SDLC Mode, eight Playbooks, staged Skills, development/testing separation and auditable verification evidence.**
+**GitHub Copilot CLI-first framework: goal-first SDLC Mode, eleven Playbooks, staged Skills, development/testing separation and auditable verification evidence.**
 
 > Status: **executable initial scaffold**, not a production-ready autonomous deployment platform. The included three-system journey is a **local, in-memory simulation**. No bank, payment, external API or production integration is configured. This project is an independent implementation inspired by Lauren Tan's verification-first ideas, not an official pstack port.
 
@@ -49,6 +49,27 @@ Risk-aware routing maps Task Contract risk (low/medium/high) and critical impact
 Agent roles: orchestrator (Claude Sonnet 5.5); standard developer (GPT-6.1 Terra); complex developer (GPT-6.1 Sol); tester (Sonnet 5.5); standard reviewer (Sonnet 5.5); banking analyst/reviewer (Opus 5.5); cross-reviewer (GPT-6.1 Terra). Model availability is organization-dependent; each agent requires its configured model rather than silent fallback.
 
 Costs use GitHub's published per-million-token rates (1 AI credit = USD 0.01), not actual agent bills. See [Bank model policy and credit methodology](docs/banking-models-and-cost.md).
+
+## v0.5 — closer to Lauren Tan's workflow concepts
+
+The goal-first SDLC Mode now follows a stronger sequence: **Goal + Done Check → Principles → Playbook → Stage-specific Skills → Feature Map discovery → Real Verification Evidence → Independent Review → Reflection + Evaluations**. This adapts pstack's patterns without claiming the Cursor slash command works in Copilot CLI.
+
+Additional Playbooks: prototype, skill-eval, and multi-phase planning (total **11**, not a reimplementation of pstack's 23). Existing eight Playbooks and the banking risk gates remain intact.
+
+    # Discover Java Spring API controllers and Gherkin tags (read-only)
+    python -m sdlc.discovery inspect
+    # Write proposed, explicitly unverified Feature Maps under artifacts/discovery/
+    python -m sdlc.discovery candidates
+    # Check existing Feature Map references
+    python -m sdlc.discovery health
+    # Deterministic routing/Skill regression tests; NOT an LLM agent eval
+    python -m sdlc.quality_eval
+    # Resume a worklist without modifying it
+    python -m sdlc.mode checkpoint --run artifacts/worklist-<id>.json
+    # Draft lessons from a run; human review required
+    python -m sdlc.reflect --run artifacts/worklist-<id>.json
+
+See [pstack alignment and scope](docs/pstack-alignment.md), [SDLC principles](docs/principles.md) and [Feature Map discovery Skill](.github/skills/feature-map-discovery/SKILL.md). Actual Copilot agent delegation, model entitlement checks, real banking integration adapters and authenticated Agent Evals are still pending.
 
 ## Architecture
 

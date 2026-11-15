@@ -21,3 +21,5 @@ For verification-only tasks, do not modify application code.
 
 ## Banking model routing
 The single source of truth is `config/banking-model-policy.json`; check `python -m sdlc.model_policy route --task CONTRACT`. A low-risk task uses the standard agent. A high-risk task must escalate to the required specialist agents and human approval. If the specified model is disabled or unavailable, stop; do not change model or downgrade a Task Contract's risk. This model declaration is not authorization to access real bank data.
+
+- If Feature Map is missing or stale, first use feature-map-discovery Skill; the scanner drafts source-derived candidates only. Review business rules and observe actual service behavior using an approved adapter before treating a map as verified. Check map health, then Cucumber Gherkin → real steps → execution evidence.

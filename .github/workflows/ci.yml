@@ -28,6 +28,11 @@ jobs:
           python -m sdlc.model_policy check
           python -m sdlc.model_policy route --task contracts/examples/banking-high-risk.json
           python -m sdlc.credit_estimate --scenario all
+      - name: Verify pstack-inspired routing, Feature Map health and static evaluation
+        run: |
+          python -m sdlc.discovery inspect
+          python -m sdlc.discovery health
+          python -m sdlc.quality_eval
       - name: Validate playbook catalog and route
         run: |
           python -m sdlc.mode catalog

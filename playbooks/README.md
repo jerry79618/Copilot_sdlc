@@ -27,3 +27,9 @@ G3: authorized data/environment readiness.
 G4: actual runtime behavior evidence (sandbox-only in v0.2).
 G5: review and quality assessment. Production release still requires external
 branch protection, environment approvals and CI.
+
+## Additional pstack-inspired routes in v0.5
+- prototype (development): compare two disposable approaches with actual evidence; promote only after approval.
+- skill-eval (investigation): predefine cases, run routing eval, then validate real Copilot behavior separately.
+- multi-phase (investigation): plan independently verifiable, reviewable slices and dependencies without changing product code.
+- All normal development/testing Playbooks now offer optional reflection after evidence. Review task and cross-system risk before any release.

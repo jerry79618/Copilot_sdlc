@@ -16,7 +16,7 @@ class SDLCModeTests(unittest.TestCase):
 
     def test_all_playbooks_are_valid(self):
         books = catalog()
-        self.assertEqual(len(books), 8)
+        self.assertEqual(len(books), 11)
         for book in books.values():
             self.assertGreater(len(book["stages"]), 3)
             self.assertTrue(any(stage.get("gate") for stage in book["stages"]))
