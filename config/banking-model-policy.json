@@ -65,7 +65,11 @@
         "G4",
         "G5"
       ],
-      "human_approval": false
+      "human_approval": false,
+      "required_evidence_gates": [
+        "G4"
+      ],
+      "all_stage_evidence": false
     },
     "medium": {
       "agents": [
@@ -81,7 +85,13 @@
         "G4",
         "G5"
       ],
-      "human_approval": false
+      "human_approval": false,
+      "required_evidence_gates": [
+        "G2",
+        "G4",
+        "G5"
+      ],
+      "all_stage_evidence": false
     },
     "high": {
       "agents": [
@@ -108,12 +118,36 @@
       "manual_approvers": [
         "business-owner",
         "release-owner"
-      ]
+      ],
+      "required_evidence_gates": [
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5"
+      ],
+      "all_stage_evidence": true
     }
   },
   "notes": [
-    "Model selections are plans, not an execution-time API. Copilot CLI agents must be dispatched explicitly and checked.",
-    "Only models approved by bank administrators are permitted. Required model policy denies fallback when unavailable.",
-    "Never provide real secrets, unredacted customer records, or production account data to AI models."
-  ]
+    "Model names and fallback candidates are configuration proposals; the bank must approve them in GitHub organization policy before any real dispatch.",
+    "modelPolicy required permits only authored models; fallback is allowed only within the listed candidates after administrator confirmation.",
+    "High-risk specialized agents remain pinned to one model; no release without human approval.",
+    "Never expose secrets, raw customer records, or production transactions to models."
+  ],
+  "org_approval_verified": false,
+  "model_fallback_candidates": {
+    "orchestrator": [
+      "claude-opus-5.5"
+    ],
+    "developer": [
+      "gpt-6.1-sol"
+    ],
+    "tester": [
+      "claude-opus-5.5"
+    ],
+    "reviewer": [
+      "claude-opus-5.5"
+    ]
+  }
 }

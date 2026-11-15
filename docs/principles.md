@@ -1,18 +1,9 @@
-# SDLC Principles — enterprise interpretation of verification-first workflows
+# Engineering principles for Copilot_sdlc
 
-These are project principles, not a verbatim copy of pstack.
+**Project context.** We are building an AI SDLC orchestration framework for banking engineering. It currently uses synthetic cross-system verification, not live bank interfaces. Match effort and documentation to the actual task.
 
-1. Begin with the user's goal, done check, proof and authority, not tool lists.
-2. Discover code, Feature Map, scenarios and existing tests before editing.
-3. Model data, state changes, identity, money, authorization and retries explicitly.
-4. Design the verification before changing behavior; test what users can observe.
-5. Select Playbook first, load situational Skills only as its stages need them.
-6. Split design / implementation / independent checks across focused agents.
-7. Make small reversible changes; require approval for irreversible bank actions.
-8. Report real observed evidence; never call sandbox PASS a bank system PASS.
-9. Encode lessons in architecture, schema, CI and regression tests, not only prose.
-10. Guard sensitive data, secrets, external writes, audit trail and model allowlists.
+**Non-negotiable business invariants.** Money calculations, consistency, authorization and privacy must be correct. Treat business rules and production operations as requiring proper authority. An observed demo test is not proof of production behavior.
 
-High-risk tasks always retain two independent reviewers plus human release
-approval. A worklist stage DONE is a recorded claim, not an authenticated proof
-of model execution. Real systems require approved adapters and runtime evidence.
+**Autonomous, accountable delivery.** Within the given scope, decide reasonable implementation details and test them rather than repeatedly requesting permission. Explain outcomes, meaningful decisions, significant alternatives and unresolved evidence gaps. Do not confuse instructions with access control: CI, protected environments and bank approvals enforce the mandatory boundaries.
+
+A repeated failure should lead to a precise test, schema check or tooling rule where possible. Do not accumulate defensive prose without measurable value.

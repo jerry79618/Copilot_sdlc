@@ -61,6 +61,10 @@ def validate_task(task):
         raise ContractError("Non-development tasks cannot allow product code changes")
     if task["intent"] == "development" and not task["allow_code_changes"]:
         raise ContractError("Development task must explicitly allow code changes")
+    if "allow_test_changes" in task and type(task["allow_test_changes"]) is not bool:
+        raise ContractError("allow_test_changes must be boolean")
+    if task["intent"] == "investigation" and task.get("allow_test_changes", False):
+        raise ContractError("Read-only investigation cannot authorize test changes")
     scenario = task.get("scenario")
     if task["intent"] != "investigation" and not scenario:
         raise ContractError("Development and verification tasks need a scenario")
@@ -69,6 +73,16 @@ def validate_task(task):
     if "approval_required" in task and type(task["approval_required"]) is not bool:
         raise ContractError("approval_required must be boolean")
     return task
+
+
+def test_changes_allowed(task):
+    """Test-only edits are within verification scope unless explicitly disabled.
+
+    This never grants permission to edit product code, real bank data, or
+    release controls. A caller must still respect filesystem/tool authority.
+    """
+    validate_task(task)
+    return task.get("allow_test_changes", task["intent"] in {"verification", "development"})
 
 
 def validate_scenario(scenario):

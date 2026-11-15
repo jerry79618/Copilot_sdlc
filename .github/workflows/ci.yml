@@ -40,11 +40,13 @@ jobs:
       - name: Validate example contracts
         run: |
           python -m sdlc.cli validate --task contracts/examples/verification.json
+          python -m sdlc.cli validate --task contracts/examples/verification-low-risk.json
           python -m sdlc.cli validate --task contracts/examples/development.json
           python -m sdlc.cli validate --task contracts/examples/investigation.json
       - name: Check worklist creation and scenario execution
         run: |
           python -m sdlc.mode start --task contracts/examples/verification.json
+          python -m sdlc.mode start --task contracts/examples/verification-low-risk.json
           python -m sdlc.mode start --task contracts/examples/development.json
           python -m sdlc.cli plan --task contracts/examples/development.json
           python -m sdlc.cli verify --task contracts/examples/verification.json --output-dir artifacts

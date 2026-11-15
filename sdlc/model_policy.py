@@ -12,7 +12,7 @@ from pathlib import Path
 from .contracts import ROOT, ContractError, load_json, validate_task
 
 RISK = {"low": 0, "medium": 1, "high": 2}
-PATTERN = re.compile(r"^([a-zA-Z][A-Za-z0-9]*):\s*(\S+)\s*$", re.M)
+PATTERN = re.compile(r"^([a-zA-Z][A-Za-z0-9]*):[ \t]*(.+?)[ \t]*$", re.M)
 
 
 def policy():
@@ -48,7 +48,15 @@ def resolve(task, config=None):
         model = config["agent_models"][name]
         if model not in config["prices_usd_per_million_tokens"]:
             raise ContractError("Model not in local price/allowlist: " + model)
-        agents.append({"agent": name, "model": model})
+        fallback = config.get("model_fallback_candidates", {}).get(name, [])
+        if not isinstance(fallback, list) or len(set(fallback)) != len(fallback):
+            raise ContractError("Invalid fallback list: " + name)
+        if any(f not in config["prices_usd_per_million_tokens"] or f == model for f in fallback):
+            raise ContractError("Fallback not in model candidate catalog: " + name)
+        agents.append({
+            "agent": name, "model": model, "fallback_candidates": fallback,
+            "policy": "required", "approval_verified": bool(config.get("org_approval_verified", False))
+        })
     approval = bool(profile["human_approval"] or task.get("approval_required", False))
     return {
         "task_id": task["id"],
@@ -58,6 +66,8 @@ def resolve(task, config=None):
         "escalation_reasons": causes,
         "dispatch": agents,
         "quality_gates": profile["quality_gates"],
+        "required_evidence_gates": profile["required_evidence_gates"],
+        "all_stage_evidence": profile["all_stage_evidence"],
         "human_approval_required": approval,
         "review_owners": profile.get("review_owners", []),
         "manual_approvers": profile.get("manual_approvers", []),
@@ -71,7 +81,11 @@ def resolve(task, config=None):
 
 
 def check_agents(config=None):
-    """Static fail-closed consistency check; not proof of Copilot CLI authentication."""
+    """Validate actual authored model order against local candidates.
+
+    This checks file syntax and consistency; it cannot verify organization
+    permissions, runtime availability or real model invocation.
+    """
     config = config or policy()
     for name, expected in config["agent_models"].items():
         path = ROOT / ".github" / "agents" / (name + ".agent.md")
@@ -82,14 +96,32 @@ def check_agents(config=None):
             raise ContractError("Agent missing frontmatter: " + name)
         header = contents.split("---", 2)[1]
         actual = dict(PATTERN.findall(header))
-        if actual.get("model") != expected:
-            raise ContractError("Model mismatch for " + name + ": " + str(actual.get("model")))
+        authored = [expected]
+        fallback = config.get("model_fallback_candidates", {}).get(name, [])
+        if fallback:
+            if actual.get("model") != expected:
+                raise ContractError("Primary model mismatch for " + name)
+            try:
+                authored_list = json.loads(actual.get("models", "null"))
+            except json.JSONDecodeError as exc:
+                raise ContractError("Invalid models list for " + name) from exc
+            if authored_list != [expected, *fallback]:
+                raise ContractError("Authored fallback mismatch for " + name)
+            authored.extend(fallback)
+        elif actual.get("model") != expected or "models" in actual:
+            raise ContractError("High-risk agent model must remain pinned: " + name)
         if (actual.get("modelPolicy") or actual.get("model-policy")) != "required":
-            raise ContractError("Agent model is not locked: " + name)
+            raise ContractError("Agent models are not restricted: " + name)
+        if any(m not in config["prices_usd_per_million_tokens"] for m in authored):
+            raise ContractError("Model outside configured candidate catalog")
         if name in {"reviewer", "banking-reviewer", "cross-reviewer", "banking-analyst"}:
             if "strict-tools-list: true" not in header or "tools:" not in header:
-                raise ContractError("Sensitive analyst/reviewer must be read-only: " + name)
-    return {"status": "PASS", "agents_checked": len(config["agent_models"])}
+                raise ContractError("Specialist analyst/reviewer must be read-only: " + name)
+    return {
+        "status": "PASS", "agents_checked": len(config["agent_models"]),
+        "org_approval_verified": bool(config.get("org_approval_verified", False)),
+        "note": "Static policy consistency only; check bank model permissions separately."
+    }
 
 
 def main(argv=None):

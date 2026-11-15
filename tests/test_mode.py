@@ -70,9 +70,10 @@ class SDLCModeTests(unittest.TestCase):
         run = make_worklist(self.task)
         with self.assertRaises(ContractError):
             update_worklist(run, "runtime-verify", "PASS", "fixtures/manual-review.json")
+        update_worklist(run, "scope", "PASS")
         with self.assertRaises(ContractError):
-            update_worklist(run, "scope", "PASS")
-        self.assertEqual(next_stage(run)["id"], "scope")
+            update_worklist(run, "feature-map", "PASS")
+        self.assertEqual(next_stage(run)["id"], "feature-map")
 
     def test_can_block_then_resume_with_proof(self):
         run = make_worklist(self.task)
