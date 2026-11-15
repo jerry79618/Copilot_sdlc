@@ -1,0 +1,21 @@
+{
+  "id": "TASK-LEAN-001",
+  "goal": "Verify synthetic review status and permitted test-only Cucumber updates",
+  "intent": "verification",
+  "risk": "low",
+  "environment": "demo",
+  "systems": [
+    "risk",
+    "application",
+    "sync"
+  ],
+  "allow_code_changes": false,
+  "allow_test_changes": true,
+  "approval_required": false,
+  "acceptance_criteria": [
+    "Synthetic risk record is in MANUAL_REVIEW",
+    "Application status is PENDING_REVIEW",
+    "Downstream sync event is delivered in demo"
+  ],
+  "scenario": "scenarios/manual-review.json"
+}

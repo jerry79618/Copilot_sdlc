@@ -58,7 +58,7 @@ For **illustration only** (not Lauren's measurements), assuming an existing veri
 3. Define permissions independently of Agent instructions: branch protection, required CI, reviewer CODEOWNERS, staging-only test credentials and protected environments.
 4. For high risk, store real review approvals and observed verification evidence in trusted systems; a worklist PASS is not signed evidence.
 5. Monitor actual usage through `/usage` and organization billing, including retries, cache hits and long-context requests. Recalculate from logs with this estimator.
-6. If `modelPolicy: required` model is unavailable, stop and ask for authorization; do not silently choose another provider.
+6. With `modelPolicy: required`, normal Agents can use an explicitly authored ordered fallback list only **after all candidates are bank-approved**. High-risk specialist Agents remain pinned. If none are allowed or available, stop rather than silently choosing another provider.
 
 ## Primary sources
 
@@ -67,3 +67,9 @@ For **illustration only** (not Lauren's measurements), assuming an existing veri
 - GitHub CLI custom agents: https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/create-custom-agents-for-cli
 - Lauren Tan /setup-pstack: https://github.com/cursor/plugins/blob/main/pstack/skills/setup-pstack/SKILL.md
 - Lauren Tan /poteto-mode: https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/SKILL.md
+
+## v0.6 optional model candidates and lean workflow
+
+The repo's `model_fallback_candidates` are **proposed model candidates**, not an independently verified bank approval list. `org_approval_verified: false` is explicit. Copilot CLI with `models` and `modelPolicy: required` may dispatch only one of the authored models; this is more flexible than a single-model lock but safer than unrestricted `preferred` fallbacks. Final provider enablement, data terms and permissions belong to the enterprise administrator. Do not set this flag to true as a substitute for documented approval.
+
+Effective risk also defines evidence gates: Low G4; Medium G2/G4/G5; High G1–G5 and evidence on every mandatory stage. Risk or impact flags cannot be downgraded by instruction simplification. Estimates in this document are unchanged hypothetical token budgets, not measured savings.

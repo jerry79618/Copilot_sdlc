@@ -1,9 +1,31 @@
-# Copilot SDLC — Enterprise AI SDLC v0.5
+# Copilot SDLC — Enterprise AI SDLC v0.6
 
 **GitHub Copilot CLI-first framework: goal-first SDLC Mode, eleven Playbooks, staged Skills, development/testing separation and auditable verification evidence.**
 
 > Status: **executable initial scaffold**, not a production-ready autonomous deployment platform. The included three-system journey is a **local, in-memory simulation**. No bank, payment, external API or production integration is configured. This project is an independent implementation inspired by Lauren Tan's verification-first ideas, not an official pstack port.
 
+
+## v0.6 — lean instructions with risk-based enforcement
+
+The default AI instructions now emphasize **project context, banking invariants and autonomous delivery**, rather than repeating defensive checklists across files. Normal technical decisions can be made autonomously; report key choices and rejected alternatives in the result. GitHub CI, application verification and bank approvals remain separate enforcement mechanisms.
+
+**Evidence requirements are risk-based** (same ordered Playbooks, fewer mandatory attachments):
+
+| Effective risk | Mandatory evidence | Decision boundary |
+| --- | --- | --- |
+| Low / lean | G4 executed verification when the Playbook has a G4 stage | Ordinary technical choices are autonomous |
+| Medium / standard | G2 baseline + G4 execution + G5 review when present | Signed-off banking rules still authoritative |
+| High / regulated | Evidence on every mandatory stage, plus manual release approval policy | Independent specialist reviews and authorized human release approval |
+
+Tester may maintain **test-scoped** Cucumber Gherkin/Java Steps and synthetic fixtures as part of verification unless `allow_test_changes: false`. This does not grant permission to modify production code. Real system G4 remains BLOCKED until an approved adapter exists.
+
+Normal agents have ordered **model candidates** under `modelPolicy: required`, not arbitrary model fallback. Specialist high-risk agents remain pinned. The repository cannot verify organization entitlement, and `config/banking-model-policy.json` explicitly records `org_approval_verified: false` until admins validate the deployment; do not deploy with unapproved models.
+
+    python -m sdlc.model_policy check
+    python -m sdlc.model_policy route --task contracts/examples/banking-high-risk.json
+    python -m sdlc.mode start --task contracts/examples/verification.json
+
+See [v0.6 rationale and operating rules](docs/lean-instructions-v06.md).
 
 ## SDLC Mode v0.2 — one goal, routed Playbook
 
@@ -23,7 +45,7 @@ python -m sdlc.mode status --run artifacts/worklist-TASK-VERIFY-001-<timestamp>.
 
 Workflow: **Goal → Task Contract → Select Playbook → Ordered Worklist → Skill per stage → G1–G5 Evidence → Review / Report**.
 
-Supported Playbooks: `feature`, `bug-fix`, `verification`, `investigation`, `refactor`, `performance`, `review`, `figure-it-out`. Unknown intent defaults to read-only planning. Each stage must record actual evidence, and runtime verification (G4) rejects unavailable external systems. Testing-only tasks cannot silently switch to source-code modification.
+Supported Playbooks: `feature`, `bug-fix`, `verification`, `investigation`, `refactor`, `performance`, `review`, `figure-it-out`. Unknown intent defaults to read-only planning. Evidence attachments follow risk policy; the mandatory G4 runtime check still rejects unavailable external systems. Testing-only tasks cannot silently switch to source-code modification.
 
 Read [SDLC Mode operator guide](docs/sdlc-mode.md), [playbook catalog](playbooks/README.md) and [central Skill](.github/skills/sdlc-mode/SKILL.md). **Copilot agent routing and delegation still require a real authenticated Copilot CLI run**; Python is the deterministic worklist engine, not an AI runtime.
 
@@ -46,7 +68,7 @@ Risk-aware routing maps Task Contract risk (low/medium/high) and critical impact
     python -m sdlc.credit_estimate --scenario all
     python -m sdlc.credit_estimate --scenario medium --retries 1
 
-Agent roles: orchestrator (Claude Sonnet 5.5); standard developer (GPT-6.1 Terra); complex developer (GPT-6.1 Sol); tester (Sonnet 5.5); standard reviewer (Sonnet 5.5); banking analyst/reviewer (Opus 5.5); cross-reviewer (GPT-6.1 Terra). Model availability is organization-dependent; each agent requires its configured model rather than silent fallback.
+Agent roles: orchestrator (Claude Sonnet 5.5); standard developer (GPT-6.1 Terra); complex developer (GPT-6.1 Sol); tester (Sonnet 5.5); standard reviewer (Sonnet 5.5); banking analyst/reviewer (Opus 5.5); cross-reviewer (GPT-6.1 Terra). Model availability is organization-dependent; normal Agents may choose only from configured candidate models; high-risk specialist Agents remain pinned. This is still subject to bank model approval.
 
 Costs use GitHub's published per-million-token rates (1 AI credit = USD 0.01), not actual agent bills. See [Bank model policy and credit methodology](docs/banking-models-and-cost.md).
 

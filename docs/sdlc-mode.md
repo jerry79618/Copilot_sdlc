@@ -71,7 +71,7 @@ supply its \`artifacts/TASK-VERIFY-001-...json\` path to \`advance\`.
 G4 checks task ID, environment, PASS, and demo classification before allowing
 progress. It will reject a staging/prod "PASS" in this version.
 
-Other stage evidence files are logged but not cryptographically authenticated:
+Other stage evidence files, when required by the risk tier, are logged but not cryptographically authenticated:
 **a recorded "PASS" there is not an independent quality/security certification**.
 Real CI checks and authorization outside this ledger remain necessary.
 
@@ -116,3 +116,11 @@ This infrastructure cannot yet connect to real bank systems.
 Unknown or blocked failures do not authorize modifying the production code.
 As each real integration is added, create eval cases proving the routing,
 evidence integrity, and denied operations.
+
+## v0.6 risk-based evidence and autonomy
+
+The ordered Playbook remains the same but the `evidence_required` field now comes from the **effective risk tier** in `config/banking-model-policy.json`. Low-risk stages that aren't G4 can be advanced without separate evidence files; medium-risk G2/G4/G5 still require files; high-risk requires evidence for every mandatory stage. Any G4 must contain valid runtime verification proof. Passing a planning stage without a file records progress, not an independent proof of correctness.
+
+Example for low-risk tasks only: `python -m sdlc.mode advance --run RUN.json --stage scope --outcome PASS`. For medium-risk `feature-map` G2, supply `--evidence path`. For high-risk tasks keep all stage artifacts and human sign-off; a worklist status never substitutes for bank approvals.
+
+Verification tasks may edit **test-scoped** code unless `allow_test_changes: false` is in the Task Contract. Such work does not grant access to application source, customer data or production changes.

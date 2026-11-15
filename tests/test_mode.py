@@ -16,7 +16,7 @@ class SDLCModeTests(unittest.TestCase):
 
     def test_all_playbooks_are_valid(self):
         books = catalog()
-        self.assertEqual(len(books), 11)
+        self.assertEqual(len(books), 8)
         for book in books.values():
             self.assertGreater(len(book["stages"]), 3)
             self.assertTrue(any(stage.get("gate") for stage in book["stages"]))
@@ -70,9 +70,11 @@ class SDLCModeTests(unittest.TestCase):
         run = make_worklist(self.task)
         with self.assertRaises(ContractError):
             update_worklist(run, "runtime-verify", "PASS", "fixtures/manual-review.json")
+        # Medium-risk: G1 is a progress record; G2 requires evidence.
+        update_worklist(run, "scope", "PASS")
         with self.assertRaises(ContractError):
-            update_worklist(run, "scope", "PASS")
-        self.assertEqual(next_stage(run)["id"], "scope")
+            update_worklist(run, "feature-map", "PASS")
+        self.assertEqual(next_stage(run)["id"], "feature-map")
 
     def test_can_block_then_resume_with_proof(self):
         run = make_worklist(self.task)

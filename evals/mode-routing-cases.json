@@ -30,17 +30,5 @@
   {
     "goal": "Please help me consider our options",
     "expected_playbook": "figure-it-out"
-  },
-  {
-    "goal": "Create a prototype comparing two reconciliation plans",
-    "expected_playbook": "prototype"
-  },
-  {
-    "goal": "Run a skill eval for our Feature Map prompt",
-    "expected_playbook": "skill-eval"
-  },
-  {
-    "goal": "制定跨系統多階段交付計畫",
-    "expected_playbook": "multi-phase"
   }
 ]
