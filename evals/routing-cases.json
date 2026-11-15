@@ -1,0 +1,17 @@
+[
+  {
+    "task": "contracts/examples/development.json",
+    "expected_intent": "development",
+    "expected_stage": "implementation"
+  },
+  {
+    "task": "contracts/examples/verification.json",
+    "expected_intent": "verification",
+    "expected_stage": "readiness-gate"
+  },
+  {
+    "task": "contracts/examples/investigation.json",
+    "expected_intent": "investigation",
+    "expected_stage": "root-cause-report"
+  }
+]

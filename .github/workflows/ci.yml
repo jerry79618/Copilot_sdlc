@@ -1,0 +1,42 @@
+name: SDLC Contract and Demo Verification
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-framework:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Compile sources
+        run: python -m compileall -q sdlc tests
+      - name: Run framework unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Validate example contracts
+        run: |
+          python -m sdlc.cli validate --task contracts/examples/verification.json
+          python -m sdlc.cli validate --task contracts/examples/development.json
+          python -m sdlc.cli validate --task contracts/examples/investigation.json
+      - name: Check route and scenario execution
+        run: |
+          python -m sdlc.cli plan --task contracts/examples/development.json
+          python -m sdlc.cli verify --task contracts/examples/verification.json --output-dir artifacts
+      - name: Upload synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: demo-verification-evidence
+          path: artifacts/*.json
+          if-no-files-found: ignore
+          retention-days: 7

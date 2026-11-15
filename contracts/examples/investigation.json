@@ -1,0 +1,18 @@
+{
+  "id": "TASK-INV-001",
+  "goal": "Investigate why status synchronization may be delayed without modifying code",
+  "intent": "investigation",
+  "risk": "low",
+  "environment": "demo",
+  "systems": [
+    "application",
+    "sync"
+  ],
+  "allow_code_changes": false,
+  "approval_required": false,
+  "acceptance_criteria": [
+    "Summarize evidence",
+    "Identify missing observations without claiming a root cause"
+  ],
+  "scenario": null
+}

@@ -1,0 +1,52 @@
+{
+  "id": "REVIEW-001",
+  "title": "人工覆核跨系統模擬驗證",
+  "adapter": "demo",
+  "systems": [
+    "risk",
+    "application",
+    "sync"
+  ],
+  "steps": [
+    {
+      "id": "risk_data",
+      "system": "risk",
+      "operation": "provision_manual_review",
+      "fixture": "manual-review.json"
+    },
+    {
+      "id": "submit",
+      "system": "application",
+      "operation": "submit_application",
+      "depends_on": [
+        "risk_data"
+      ]
+    },
+    {
+      "id": "sync_event",
+      "system": "sync",
+      "operation": "process_status_sync",
+      "depends_on": [
+        "submit"
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "system": "risk",
+      "field": "status",
+      "equals": "MANUAL_REVIEW"
+    },
+    {
+      "system": "application",
+      "field": "status",
+      "equals": "PENDING_REVIEW"
+    },
+    {
+      "system": "sync",
+      "field": "delivered",
+      "equals": true
+    }
+  ],
+  "cleanup": "in-memory-reset"
+}

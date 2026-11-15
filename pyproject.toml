@@ -1,0 +1,9 @@
+[project]
+name = "copilot-enterprise-sdlc"
+version = "0.1.0"
+description = "GitHub Copilot CLI-first SDLC contract and verification scaffold"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.setuptools.packages.find]
+include = ["sdlc*"]
