@@ -26,3 +26,11 @@ For Feature Maps with a Cucumber Binding, use .github/skills/cucumber-authoring/
 3. Financial transactions, ledger, privacy, authorization and cross-system money movement require specialist analysis, independent two-model review, and signed human approvals before release.
 4. Never expose passwords, production secrets, raw customer data or unredacted transactions to model prompts, tools or evidence.
 5. Use the cost estimator as a scenario model, not actual GitHub charges; monitor `/usage` and admin billing to calibrate.
+
+## Goal-first pstack-inspired SDLC v0.5
+- Read `docs/principles.md` before selecting Playbook. Confirm business goal, accepted results and required observable proof.
+- Choose one of 11 Playbooks; use each stage's `skills` for situational loading, not every Skill on every turn.
+- Before new testing/code changes, check `python -m sdlc.discovery health`; missing Feature Maps can be drafted with `sdlc.discovery candidates`, but a static draft cannot be treated as runtime verified.
+- Build/reuse Cucumber steps from approved Feature Map and signed-off business conditions; never invent banking acceptance criteria.
+- For recurring errors use `python -m sdlc.quality_eval` and `sdlc.reflect` to recommend enforceable changes. Require peer review for all rule/skill updates.
+- Worklist checkpoints are records. No command here spawns autonomous subagents, auto-merges PRs or certifies unapproved models.

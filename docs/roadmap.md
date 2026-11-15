@@ -42,3 +42,14 @@ Agent Evals, PR and release approvals, rollback and monitoring integrations.
 - [x] Consistency checks and cost tests in CI.
 - [ ] Test authorized agents in a real authenticated Copilot CLI session and bank model allowlists.
 - [ ] Connect actual billing events, protected GitHub rulesets and immutable reviewer sign-offs.
+
+## v0.5 — pstack conceptual alignment
+- [x] Readable principles and explicit goal-first route instructions.
+- [x] Feature Map static discovery from Spring annotations and Gherkin + conservative candidate drafts.
+- [x] Static Feature Map drift/links health check; no inferred runtime proof.
+- [x] Prototype, Skill Eval and Multi-phase Planning Playbooks (11 total).
+- [x] Skill routing matrix regression evaluation and CI checks.
+- [x] Ordered worklist checkpoint with evidence SHA256; optional reflection lesson draft.
+- [ ] Confirm real Copilot CLI delegation, multi-model review fan-out and model access in an authorized environment.
+- [ ] Build real app-driving verification adapters and operational Feature Map maintenance.
+- [ ] Measure agent Evals on blinded tasks and add authorized PR watch / handoff.

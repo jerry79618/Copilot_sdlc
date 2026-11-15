@@ -13,3 +13,5 @@ This repository is the **orchestration framework**, not an existing Java/React a
 - Run deterministic checks prior to claiming done; differentiate static review and executed tests.
 
 - Banking routing: `python -m sdlc.model_policy route --task TASK.json`. `config/banking-model-policy.json` is the model plan; bank organization allowlists and approvals must be enforced separately. Agents use `modelPolicy: required`; do not silently replace a blocked model. Sensitive changes require independent double review and authorized human sign-off. Never send real customer PII, production account data, or credentials to models.
+
+- Goal-first workflow v0.5: `docs/principles.md` → `sdlc-mode` Skill → chosen Playbook's stage skills → Feature Map / Cucumber evidence → independent review → optional reflection and static Skill eval. Use `python -m sdlc.discovery inspect|health`, `python -m sdlc.quality_eval` and `python -m sdlc.mode checkpoint`. Do not mistake static source discovery for actual behavior.

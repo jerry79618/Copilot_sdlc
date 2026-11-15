@@ -15,15 +15,18 @@ from .contracts import ContractError, ROOT, load_json, validate_task
 from .model_policy import resolve as resolve_model_policy
 
 VALID_GATES = {"G1", "G2", "G3", "G4", "G5"}
-VALID_SKILLS = {"task-routing", "development", "verification", "cross-system-data", "failure-analysis", "cucumber-authoring"}
+VALID_SKILLS = {"task-routing", "development", "verification", "cross-system-data", "failure-analysis", "cucumber-authoring", "feature-map-discovery", "skill-eval", "reflection"}
 INTENT_DEFAULTS = {"development": "feature", "verification": "verification", "investigation": "investigation"}
 TERMINAL = {"READY_FOR_REVIEW", "COMPLETE"}
-MUTATING_PLAYBOOKS = {"feature", "bug-fix", "refactor", "performance"}
-READONLY_PLAYBOOKS = {"verification", "investigation", "review", "figure-it-out"}
+MUTATING_PLAYBOOKS = {"feature", "bug-fix", "refactor", "performance", "prototype"}
+READONLY_PLAYBOOKS = {"verification", "investigation", "review", "figure-it-out", "skill-eval", "multi-phase"}
 IDENT = re.compile(r"^[a-z][a-z0-9-]*$")
 
 # This is a conservative suggestion layer, not a natural-language guarantee.
 KEYWORDS = [
+    ("skill-eval", ("skill eval", "evaluate skill", "eval a skill", "技能評估", "技能測試")),
+    ("multi-phase", ("multi-phase", "multi phase", "多階段", "階段規劃", "多個 pr")),
+    ("prototype", ("prototype", "兩種方案", "兩個方案", "原型", "概念驗證")),
     ("review", ("code review", "review pr", "pull request review", "審查程式", "程式審查")),
     ("performance", ("performance", "latency", "bottleneck", "效能", "效能改善", "變慢", "慢速")),
     ("refactor", ("refactor", "restructure", "重構", "重新整理程式架構")),
@@ -138,7 +141,8 @@ def make_worklist(task, override=None):
         "stages": [
             {"id": s["id"], "title": s["title"], "skills": s["skills"],
              "gate": s.get("gate"), "optional": s.get("optional", False),
-             "status": "PENDING", "evidence": None, "reason": None}
+             "status": "PENDING", "evidence": None, "reason": None,
+             "evidence_sha256": None, "updated_at": None}
             for s in book["stages"]
         ],
     }
@@ -177,10 +181,12 @@ def update_worklist(worklist, stage_id, outcome, evidence_path=None, reason=None
             if proof.get("classification") == "CUCUMBER_DEMO_VERIFIED" and (proof.get("runner") != "cucumber-jvm" or not proof.get("feature_map") or not proof.get("checks")):
                 raise ContractError("Incomplete Cucumber verification evidence")
         active["evidence"] = str(source)
+        active["evidence_sha256"] = hashlib.sha256(source.read_bytes()).hexdigest()
         active["reason"] = None
     else:
         active["reason"] = reason
         active["evidence"] = str(Path(evidence_path).resolve()) if evidence_path else None
+    active["updated_at"] = datetime.now(timezone.utc).isoformat()
     active["status"] = {"PASS": "DONE", "BLOCKED": "BLOCKED", "SKIP": "SKIPPED"}[outcome]
     worklist["status"] = "BLOCKED" if outcome == "BLOCKED" else "ACTIVE"
     if next_stage(worklist) is None:
@@ -209,6 +215,8 @@ def run_cli(argv=None):
     s.add_argument("--task", required=True)
     s.add_argument("--playbook")
     s.add_argument("--output-dir", default="artifacts")
+    q = sub.add_parser("checkpoint", help="Read-only progress snapshot for pause/resume")
+    q.add_argument("--run", required=True)
     v = sub.add_parser("status", help="Display the next required stage")
     v.add_argument("--run", required=True)
     a = sub.add_parser("advance", help="Record completion/skip/block with evidence and enforce order")
@@ -232,6 +240,20 @@ def run_cli(argv=None):
             save_json(path, run, exclusive=True)
             result = {"worklist": str(path), "playbook": run["playbook"],
                       "status": run["status"], "next": next_stage(run)}
+        elif args.command == "checkpoint":
+            worklist = load_json(args.run)
+            result = {
+                "task_id": worklist["task_id"], "playbook": worklist["playbook"],
+                "status": worklist["status"], "next": next_stage(worklist),
+                "progress": {state: sum(s["status"] == state for s in worklist["stages"])
+                             for state in ("DONE", "PENDING", "SKIPPED", "BLOCKED")},
+                "proof_files": [
+                    {"stage": s["id"], "path": s["evidence"],
+                     "sha256": s.get("evidence_sha256")}
+                    for s in worklist["stages"] if s["evidence"]
+                ],
+                "limitations": worklist.get("limitations", []),
+            }
         elif args.command == "status":
             worklist = load_json(args.run)
             result = {"task_id": worklist["task_id"], "playbook": worklist["playbook"],
