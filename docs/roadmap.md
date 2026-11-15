@@ -1,25 +1,28 @@
-# Delivery roadmap
+# SDLC delivery roadmap
 
-## v0.1 — built
-- GitHub Copilot CLI repository agents and task-driven Skills.
-- Development/verification/investigation routing contract.
-- JSON task contract and cross-system scenario with dependency checks.
-- In-memory 3-system demo, ordered execution, assertions, evidence JSON.
-- Python stdlib regression tests, CI, Feature Map and security boundaries.
+## v0.1 — merged
+Task contracts, development/testing/investigation routes, Feature Map,
+synthetic multi-system workflow, evidence runner, Copilot agents and Skills,
+basic CI.
 
-## v0.2 — next
-- Strict JSON Schema validation and richer contract fields.
-- Read-only source/Code Map indexing per target repo.
-- Real test adapters with auth, sanitized evidence and secure secrets integration.
-- Cucumber/JUnit/Selenium/Playwright runner hooks.
-- Status polling, correlation ID, idempotency, cleanup and data expiry.
-- Controlled reviewer escalation, retry budget and distinct TEST_DEFECT classification.
+## v0.2 — SDLC Mode entry point
+- [x] Goal-first route suggestion, no forced long prompt.
+- [x] Eight declared Playbooks with ordered stages, mapped Skills and gates.
+- [x] Persistent worklist with PASS/BLOCKED/optional SKIP and evidence paths.
+- [x] Separate development/testing/read-only pathways.
+- [x] G4 prevents non-demo or mismatched-task verification from claiming success.
+- [x] Copilot \`orchestrator\` reads new Skill and runbook.
+- [x] Routing evals and invalid-transition tests.
+- [ ] Run authenticated Copilot CLI end-to-end session in a real operator environment.
 
-## v0.3 — future
-- Copilot CLI workflow orchestration integration (depending on supported stable APIs).
-- Separate development and verification workspaces with independent check stages.
-- GitHub issue/PR event-driven startup with permissions review.
-- SLOs and eval suite: reproducible success %, blocked cause precision, manual intervention.
-- Staging release approval, release evidence and rollbacks; production gated by organization rules.
+## v0.3 — real adapters and enterprise protection (not built)
+- Integrate verified Cucumber, Selenium, JUnit and Java build adapters.
+- Test-only authenticated APIs/MCP for cross-system data provision/readiness.
+- Correlation IDs, asynchronous event polling, safe cleanup, retries and owner alerts.
+- Enforce evidence signing/provenance and protected CI / branch rulesets.
+- Verify Copilot agent task selection and delegated Skill execution in authenticated sessions.
 
-Every milestone must add real failing/passing tests before claiming completion.
+## Later
+Dynamic long-running orchestration where supported, artifact governance,
+Agent Evals, PR and release approvals, rollback and monitoring integrations.
+**Never label a mock PASS as real bank system E2E.**

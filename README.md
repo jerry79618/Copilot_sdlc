@@ -1,8 +1,31 @@
-# Copilot SDLC — Enterprise AI SDLC v0.1
+# Copilot SDLC — Enterprise AI SDLC v0.2
 
-**GitHub Copilot CLI-first framework: one task entry point, separate development/testing tracks, shared evidence-driven verification.**
+**GitHub Copilot CLI-first framework: goal-first SDLC Mode, eight Playbooks, staged Skills, development/testing separation and auditable verification evidence.**
 
 > Status: **executable initial scaffold**, not a production-ready autonomous deployment platform. The included three-system journey is a **local, in-memory simulation**. No bank, payment, external API or production integration is configured. This project is an independent implementation inspired by Lauren Tan's verification-first ideas, not an official pstack port.
+
+
+## SDLC Mode v0.2 — one goal, routed Playbook
+
+The default entry point is the **`orchestrator` Copilot CLI agent + `sdlc-mode` Skill**, inspired by Lauren Tan's goal-first `/poteto-mode`. This is our own implementation: `/poteto-mode` is **not** a GitHub Copilot CLI command.
+
+```bash
+# Agent-facing invocation (requires authenticated Copilot CLI)
+copilot --agent orchestrator --prompt "測試跨系統人工覆核；請確認資料與環境，保存證據，不得修改產品程式碼。"
+
+# Deterministic workflow management (no Copilot authentication required)
+python -m sdlc.mode catalog
+python -m sdlc.mode route --goal "新增訂單查詢 API"
+python -m sdlc.mode start --task contracts/examples/verification.json
+# Use the worklist file returned above:
+python -m sdlc.mode status --run artifacts/worklist-TASK-VERIFY-001-<timestamp>.json
+```
+
+Workflow: **Goal → Task Contract → Select Playbook → Ordered Worklist → Skill per stage → G1–G5 Evidence → Review / Report**.
+
+Supported Playbooks: `feature`, `bug-fix`, `verification`, `investigation`, `refactor`, `performance`, `review`, `figure-it-out`. Unknown intent defaults to read-only planning. Each stage must record actual evidence, and runtime verification (G4) rejects unavailable external systems. Testing-only tasks cannot silently switch to source-code modification.
+
+Read [SDLC Mode operator guide](docs/sdlc-mode.md), [playbook catalog](playbooks/README.md) and [central Skill](.github/skills/sdlc-mode/SKILL.md). **Copilot agent routing and delegation still require a real authenticated Copilot CLI run**; Python is the deterministic worklist engine, not an AI runtime.
 
 ## Architecture
 

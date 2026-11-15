@@ -2,6 +2,7 @@
 
 This repository is the **orchestration framework**, not an existing Java/React application. Do not invent external integration endpoints. Use `AGENTS.md` for cross-agent policy.
 
+- Primary entry for substantial engineering requests: `sdlc-mode` Skill + `orchestrator` agent. Its `playbooks/catalog.json` maps task goals to stages and Skills; `python -m sdlc.mode` manages ordered worklist evidence. Do not assume `/poteto-mode` exists in Copilot CLI.
 - Task input: `contracts/examples/*.json` / Task Contracts described in `docs/architecture.md`.
 - Intent: `development`, `verification`, `investigation`; route using `sdlc/workflow.py`.
 - Feature Map: `docs/feature-map/`. Scenario dependencies: `scenarios/`. Sandbox data: `fixtures/`.
