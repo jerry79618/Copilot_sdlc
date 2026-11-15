@@ -1,0 +1,27 @@
+{
+  "id": "TASK-BANK-001",
+  "goal": "Implement safe idempotent manual review on a sensitive transaction and validate cross-system consistency",
+  "intent": "development",
+  "risk": "high",
+  "impact_flags": [
+    "authorization",
+    "cross_system_financial",
+    "ledger_consistency"
+  ],
+  "environment": "demo",
+  "systems": [
+    "risk",
+    "application",
+    "sync"
+  ],
+  "allow_code_changes": true,
+  "approval_required": true,
+  "acceptance_criteria": [
+    "Document signed-off financial transaction invariants",
+    "Verify repeated requests do not duplicate downstream effects",
+    "Cucumber and unit checks pass in approved test environment",
+    "Independent cross-model reviewers and business owner sign off before any release"
+  ],
+  "scenario": "scenarios/manual-review.json",
+  "note": "Illustrative task contract only. The demo scenario does not implement bank transaction/ledger tests."
+}

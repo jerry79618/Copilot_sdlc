@@ -70,3 +70,6 @@ For multi-system tests, never claim full integration proof from a mock adapter.
 
 ## Cucumber-backed Verification
 The scenario and runtime verification stages may load cucumber-authoring Skill to translate a linked Feature Map into runnable Gherkin, Java Step Definitions, JSON/HTML reports and G4 evidence. Validate binding first; do not claim success without actual Cucumber execution.
+
+## Banking risk-aware model routing
+Before delegating, run `python -m sdlc.model_policy route --task TASK.json` and inspect `effective_risk`, escalations from `impact_flags`, required reviewers and human approvals. The proposed model roster is in `config/banking-model-policy.json`. Never downgrade risk or substitute models. If the bank's Copilot organization disallows a required model, report BLOCKED. For high risk, use banking-analyst before code, developer-high for implementation, tester for Cucumber, banking-reviewer AND cross-reviewer for independent reviews, plus human release approval. A worklist PASS does not prove these agents actually ran. Run `python -m sdlc.credit_estimate --scenario all` for planning only.

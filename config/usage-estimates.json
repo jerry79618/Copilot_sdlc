@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "as_of": "2026-11-16",
+  "unit": "GitHub AI Credits",
+  "usd_per_credit": 0.01,
+  "assumptions": [
+    "Forecast only; token quantities are hypothetical across all agent calls for one completed task.",
+    "All input charged at uncached default-context rate; output includes any reasoning tokens; no separate cache-write estimate.",
+    "Model rate is GitHub's listed USD per 1,000,000 tokens; real billing can vary with caching, context tier, provider and retries.",
+    "Developer may iterate multiple times; token budgets cover expected iterations, not an unlimited autonomous run.",
+    "Active agent time is wall-clock approximation, not measured performance; human approvals and slow external dependencies excluded."
+  ],
+  "cases": {
+    "small": {
+      "risk": "low",
+      "description": "Copy/form change or isolated low-risk helper with unit + BDD check",
+      "active_time_min": [
+        15,
+        50
+      ],
+      "bank_end_to_end_time_min": [
+        30,
+        120
+      ],
+      "tokens": {
+        "orchestrator": {
+          "input": 40000,
+          "output": 5000
+        },
+        "developer": {
+          "input": 80000,
+          "output": 12000
+        },
+        "tester": {
+          "input": 60000,
+          "output": 8000
+        },
+        "reviewer": {
+          "input": 35000,
+          "output": 4000
+        }
+      }
+    },
+    "medium": {
+      "risk": "medium",
+      "description": "Java API/bug fix, Feature Map/Cucumber, integration checks",
+      "active_time_min": [
+        60,
+        240
+      ],
+      "bank_end_to_end_time_min": [
+        120,
+        480
+      ],
+      "tokens": {
+        "orchestrator": {
+          "input": 100000,
+          "output": 15000
+        },
+        "developer-high": {
+          "input": 340000,
+          "output": 45000
+        },
+        "tester": {
+          "input": 240000,
+          "output": 30000
+        },
+        "reviewer": {
+          "input": 120000,
+          "output": 15000
+        }
+      }
+    },
+    "large": {
+      "risk": "high",
+      "description": "High-risk financial state/authorization, multi-system data and independent dual review",
+      "active_time_min": [
+        240,
+        1200
+      ],
+      "bank_end_to_end_time_min": [
+        480,
+        7200
+      ],
+      "tokens": {
+        "orchestrator": {
+          "input": 250000,
+          "output": 30000
+        },
+        "banking-analyst": {
+          "input": 260000,
+          "output": 35000
+        },
+        "developer-high": {
+          "input": 1800000,
+          "output": 220000
+        },
+        "tester": {
+          "input": 1200000,
+          "output": 140000
+        },
+        "banking-reviewer": {
+          "input": 440000,
+          "output": 65000
+        },
+        "cross-reviewer": {
+          "input": 350000,
+          "output": 45000
+        }
+      }
+    }
+  }
+}

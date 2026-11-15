@@ -34,3 +34,11 @@ Agent Evals, PR and release approvals, rollback and monitoring integrations.
 - [x] JSON report converter to SDLC Gate G4 evidence.
 - [x] Maven Cucumber job in GitHub Actions.
 - [ ] Connect authorized Java/Selenium and external systems for real E2E.
+
+## v0.4 — banking model and billing safety
+- [x] Per-agent model locks and specialist higher-risk agents.
+- [x] Risk escalation using sensitive task impact flags, independent dual review and human approval plans.
+- [x] Reproducible Copilot AI Credit estimates from public prices and hypothetical token budgets.
+- [x] Consistency checks and cost tests in CI.
+- [ ] Test authorized agents in a real authenticated Copilot CLI session and bank model allowlists.
+- [ ] Connect actual billing events, protected GitHub rulesets and immutable reviewer sign-offs.

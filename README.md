@@ -1,4 +1,4 @@
-# Copilot SDLC — Enterprise AI SDLC v0.3
+# Copilot SDLC — Enterprise AI SDLC v0.4
 
 **GitHub Copilot CLI-first framework: goal-first SDLC Mode, eight Playbooks, staged Skills, development/testing separation and auditable verification evidence.**
 
@@ -36,6 +36,19 @@ Read [SDLC Mode operator guide](docs/sdlc-mode.md), [playbook catalog](playbooks
     python -m sdlc.cucumber_evidence --task contracts/examples/verification.json --feature manual-review
 
 The JSON/HTML report lives in cucumber/target/cucumber-report/. The normalized artifacts/cucumber-evidence.json feeds SDLC G4. The demo adapter is in-memory; PASS does **not** prove a real integration.
+
+## Banking risk-aware agents and AI credits (v0.4)
+
+Risk-aware routing maps Task Contract risk (low/medium/high) and critical impact flags to role-specific agent models. Transaction, ledger, customer privacy, authorization and cross-system financial risks require TWO independent reviews and human release approval. All models must be approved by the bank organization.
+
+    python -m sdlc.model_policy check
+    python -m sdlc.model_policy route --task contracts/examples/banking-high-risk.json
+    python -m sdlc.credit_estimate --scenario all
+    python -m sdlc.credit_estimate --scenario medium --retries 1
+
+Agent roles: orchestrator (Claude Sonnet 5.5); standard developer (GPT-6.1 Terra); complex developer (GPT-6.1 Sol); tester (Sonnet 5.5); standard reviewer (Sonnet 5.5); banking analyst/reviewer (Opus 5.5); cross-reviewer (GPT-6.1 Terra). Model availability is organization-dependent; each agent requires its configured model rather than silent fallback.
+
+Costs use GitHub's published per-million-token rates (1 AI credit = USD 0.01), not actual agent bills. See [Bank model policy and credit methodology](docs/banking-models-and-cost.md).
 
 ## Architecture
 
