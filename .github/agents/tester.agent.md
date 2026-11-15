@@ -13,3 +13,5 @@ For verification-only tasks, do not modify application code.
 - Distinguish PASS/FAIL/BLOCKED/ERROR and keep evidence. A demo PASS is sandbox-only.
 - Test script changes require their own authorized development task.
 - If another system requires special data and no provisioner exists, report BLOCKED with precise prerequisites.
+
+- Read Feature Map SDLC Cucumber Binding, use cucumber-authoring Skill, validate links, write/reuse Gherkin and Java Step Definitions, execute real Cucumber-JVM, then convert its JSON report to evidence. Never invent a passing report.

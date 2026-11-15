@@ -46,3 +46,35 @@ jobs:
           path: artifacts/*.json
           if-no-files-found: ignore
           retention-days: 7
+
+  cucumber-bdd:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+          cache-dependency-path: cucumber/pom.xml
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate Feature Map bindings
+        run: python -m sdlc.feature_map validate
+      - name: Execute Cucumber JVM
+        run: mvn -B -ntp -f cucumber/pom.xml test
+      - name: Produce normalized SDLC verification evidence
+        run: |
+          python -m sdlc.cucumber_evidence --task contracts/examples/verification.json --feature manual-review
+          python -c "import json; x=json.load(open('artifacts/cucumber-evidence.json')); assert x['status']=='PASS' and x['classification']=='CUCUMBER_DEMO_VERIFIED'"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cucumber-bdd-evidence
+          path: |
+            cucumber/target/cucumber-report/
+            artifacts/cucumber-evidence.json
+          if-no-files-found: ignore
+          retention-days: 7

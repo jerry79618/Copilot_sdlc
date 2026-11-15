@@ -12,3 +12,5 @@ description: >
 5. Inspect JSON evidence: environment, adapter limitations, steps, expected and observed checks.
 6. PASS is valid only within the adapter's tested boundary. If external data/tool unavailable, BLOCKED.
 7. Capture errors, report exactly what was NOT executed, and never change product code for test-only tasks.
+
+If a Feature Map has a Cucumber Binding, use cucumber-authoring Skill. Run python -m sdlc.feature_map validate, then mvn -B -ntp -f cucumber/pom.xml test and python -m sdlc.cucumber_evidence --task contracts/examples/verification.json --feature manual-review. Feed the resulting evidence to worklist G4; demo PASS is sandbox-only.

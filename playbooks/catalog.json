@@ -63,7 +63,8 @@
           "id": "runtime-verify",
           "title": "Execute test and capture actual evidence",
           "skills": [
-            "verification"
+            "verification",
+            "cucumber-authoring"
           ],
           "gate": "G4"
         },
@@ -146,7 +147,8 @@
           "id": "runtime-verify",
           "title": "Demonstrate failing-before / passing-after evidence",
           "skills": [
-            "verification"
+            "verification",
+            "cucumber-authoring"
           ],
           "gate": "G4"
         },
@@ -192,7 +194,8 @@
           "id": "scenario",
           "title": "Map scenarios, dependencies and order",
           "skills": [
-            "cross-system-data"
+            "cross-system-data",
+            "cucumber-authoring"
           ]
         },
         {

@@ -26,3 +26,11 @@ basic CI.
 Dynamic long-running orchestration where supported, artifact governance,
 Agent Evals, PR and release approvals, rollback and monitoring integrations.
 **Never label a mock PASS as real bank system E2E.**
+
+## v0.3 — Feature Map driven Cucumber BDD
+- [x] Cucumber JVM Maven module with positive/negative demo scenarios.
+- [x] Feature Map machine binding and cross-file validation.
+- [x] Shared Cucumber authoring Skill and tester Agent instructions.
+- [x] JSON report converter to SDLC Gate G4 evidence.
+- [x] Maven Cucumber job in GitHub Actions.
+- [ ] Connect authorized Java/Selenium and external systems for real E2E.

@@ -14,7 +14,7 @@ from pathlib import Path
 from .contracts import ContractError, ROOT, load_json, validate_task
 
 VALID_GATES = {"G1", "G2", "G3", "G4", "G5"}
-VALID_SKILLS = {"task-routing", "development", "verification", "cross-system-data", "failure-analysis"}
+VALID_SKILLS = {"task-routing", "development", "verification", "cross-system-data", "failure-analysis", "cucumber-authoring"}
 INTENT_DEFAULTS = {"development": "feature", "verification": "verification", "investigation": "investigation"}
 TERMINAL = {"READY_FOR_REVIEW", "COMPLETE"}
 MUTATING_PLAYBOOKS = {"feature", "bug-fix", "refactor", "performance"}
@@ -169,8 +169,10 @@ def update_worklist(worklist, stage_id, outcome, evidence_path=None, reason=None
                 raise ContractError("Verification evidence does not match task/environment")
             if proof.get("status") != "PASS":
                 raise ContractError("Verification evidence must contain PASS")
-            if worklist["environment"] != "demo" or proof.get("classification") != "DEMO_VERIFIED":
+            if worklist["environment"] != "demo" or proof.get("classification") not in {"DEMO_VERIFIED", "CUCUMBER_DEMO_VERIFIED"}:
                 raise ContractError("Real-system verification adapters are not implemented")
+            if proof.get("classification") == "CUCUMBER_DEMO_VERIFIED" and (proof.get("runner") != "cucumber-jvm" or not proof.get("feature_map") or not proof.get("checks")):
+                raise ContractError("Incomplete Cucumber verification evidence")
         active["evidence"] = str(source)
         active["reason"] = None
     else:

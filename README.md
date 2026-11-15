@@ -1,4 +1,4 @@
-# Copilot SDLC — Enterprise AI SDLC v0.2
+# Copilot SDLC — Enterprise AI SDLC v0.3
 
 **GitHub Copilot CLI-first framework: goal-first SDLC Mode, eight Playbooks, staged Skills, development/testing separation and auditable verification evidence.**
 
@@ -26,6 +26,16 @@ Workflow: **Goal → Task Contract → Select Playbook → Ordered Worklist → 
 Supported Playbooks: `feature`, `bug-fix`, `verification`, `investigation`, `refactor`, `performance`, `review`, `figure-it-out`. Unknown intent defaults to read-only planning. Each stage must record actual evidence, and runtime verification (G4) rejects unavailable external systems. Testing-only tasks cannot silently switch to source-code modification.
 
 Read [SDLC Mode operator guide](docs/sdlc-mode.md), [playbook catalog](playbooks/README.md) and [central Skill](.github/skills/sdlc-mode/SKILL.md). **Copilot agent routing and delegation still require a real authenticated Copilot CLI run**; Python is the deterministic worklist engine, not an AI runtime.
+
+## Cucumber BDD + Feature Map (v0.3)
+
+**Testing now uses executable Cucumber-JVM Gherkin and Java Step Definitions.** The Feature Map remains behavioral, with a machine-readable link to actual tests and cross-system fixtures. See [Cucumber guide](docs/cucumber-bdd.md).
+
+    python -m sdlc.feature_map validate
+    mvn -B -ntp -f cucumber/pom.xml test
+    python -m sdlc.cucumber_evidence --task contracts/examples/verification.json --feature manual-review
+
+The JSON/HTML report lives in cucumber/target/cucumber-report/. The normalized artifacts/cucumber-evidence.json feeds SDLC G4. The demo adapter is in-memory; PASS does **not** prove a real integration.
 
 ## Architecture
 
