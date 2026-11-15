@@ -26,7 +26,8 @@
           "id": "design",
           "title": "Explore code and decide architecture",
           "skills": [
-            "development"
+            "development",
+            "feature-map-discovery"
           ]
         },
         {
@@ -64,7 +65,8 @@
           "title": "Execute test and capture actual evidence",
           "skills": [
             "verification",
-            "cucumber-authoring"
+            "cucumber-authoring",
+            "feature-map-discovery"
           ],
           "gate": "G4"
         },
@@ -82,6 +84,14 @@
           "skills": [
             "task-routing"
           ]
+        },
+        {
+          "id": "reflect",
+          "title": "Optionally capture proven lessons and propose durable checks",
+          "skills": [
+            "reflection"
+          ],
+          "optional": true
         }
       ]
     },
@@ -102,7 +112,8 @@
           "id": "reproduce",
           "title": "Capture failing behavior before code changes",
           "skills": [
-            "verification"
+            "verification",
+            "feature-map-discovery"
           ],
           "gate": "G2"
         },
@@ -166,6 +177,14 @@
           "skills": [
             "task-routing"
           ]
+        },
+        {
+          "id": "reflect",
+          "title": "Optionally capture proven lessons and propose durable checks",
+          "skills": [
+            "reflection"
+          ],
+          "optional": true
         }
       ]
     },
@@ -186,7 +205,8 @@
           "id": "feature-map",
           "title": "Read affected Feature Map and real behavior",
           "skills": [
-            "verification"
+            "verification",
+            "feature-map-discovery"
           ],
           "gate": "G2"
         },
@@ -236,6 +256,14 @@
           "skills": [
             "verification"
           ]
+        },
+        {
+          "id": "reflect",
+          "title": "Optionally capture proven lessons and propose durable checks",
+          "skills": [
+            "reflection"
+          ],
+          "optional": true
         }
       ]
     },
@@ -293,7 +321,8 @@
           "id": "baseline",
           "title": "Record existing behavior before change",
           "skills": [
-            "verification"
+            "verification",
+            "feature-map-discovery"
           ],
           "gate": "G2"
         },
@@ -341,6 +370,14 @@
           "skills": [
             "task-routing"
           ]
+        },
+        {
+          "id": "reflect",
+          "title": "Optionally capture proven lessons and propose durable checks",
+          "skills": [
+            "reflection"
+          ],
+          "optional": true
         }
       ]
     },
@@ -409,6 +446,14 @@
           "skills": [
             "task-routing"
           ]
+        },
+        {
+          "id": "reflect",
+          "title": "Optionally capture proven lessons and propose durable checks",
+          "skills": [
+            "reflection"
+          ],
+          "optional": true
         }
       ]
     },
@@ -436,7 +481,8 @@
           "id": "checks",
           "title": "Validate evidence, tests and known limitations",
           "skills": [
-            "verification"
+            "verification",
+            "skill-eval"
           ],
           "gate": "G2"
         },
@@ -480,6 +526,156 @@
         {
           "id": "review-plan",
           "title": "Record authorization questions, do not implement automatically",
+          "skills": [
+            "task-routing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "prototype",
+      "intent": "development",
+      "description": "Compare two small disposable prototypes to settle a real design fork before committing a product change",
+      "stages": [
+        {
+          "id": "scope",
+          "title": "Name the exact decision, constraints and no-production boundary",
+          "skills": [
+            "task-routing"
+          ],
+          "gate": "G1"
+        },
+        {
+          "id": "observables",
+          "title": "Specify measurable comparison criteria",
+          "skills": [
+            "skill-eval"
+          ],
+          "gate": "G2"
+        },
+        {
+          "id": "prototypes",
+          "title": "Build minimal isolated prototype candidates",
+          "skills": [
+            "development"
+          ]
+        },
+        {
+          "id": "readiness",
+          "title": "Use approved local fixtures and safe environment",
+          "skills": [
+            "cross-system-data"
+          ],
+          "gate": "G3"
+        },
+        {
+          "id": "compare",
+          "title": "Execute both candidates and collect observable evidence",
+          "skills": [
+            "verification"
+          ],
+          "gate": "G4"
+        },
+        {
+          "id": "review-choice",
+          "title": "Compare evidence; choose or record unresolved tradeoff",
+          "skills": [
+            "skill-eval"
+          ],
+          "gate": "G5"
+        },
+        {
+          "id": "handoff",
+          "title": "Request explicit authorization before promoting chosen prototype",
+          "skills": [
+            "task-routing"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "skill-eval",
+      "intent": "investigation",
+      "description": "Evaluate changes to prompts/Skills against predeclared routing and behavioral cases without assuming model quality",
+      "stages": [
+        {
+          "id": "objective",
+          "title": "Define the metric and baseline skill",
+          "skills": [
+            "task-routing"
+          ],
+          "gate": "G1"
+        },
+        {
+          "id": "baseline",
+          "title": "Record examples and pass/fail scoring before evaluation",
+          "skills": [
+            "skill-eval"
+          ],
+          "gate": "G2"
+        },
+        {
+          "id": "cases",
+          "title": "Prepare diverse holdout tests and control",
+          "skills": [
+            "skill-eval"
+          ]
+        },
+        {
+          "id": "measure",
+          "title": "Run approved deterministic and, when available, authenticated agent evaluations",
+          "skills": [
+            "skill-eval"
+          ]
+        },
+        {
+          "id": "review",
+          "title": "Report limits, measured outcome and unexpected behavior",
+          "skills": [
+            "skill-eval"
+          ],
+          "gate": "G5"
+        }
+      ]
+    },
+    {
+      "id": "multi-phase",
+      "intent": "investigation",
+      "description": "Break complex bank changes into small independently verifiable PR-sized plans with approval points",
+      "stages": [
+        {
+          "id": "goal",
+          "title": "Describe end state, affected systems and constraints",
+          "skills": [
+            "task-routing"
+          ],
+          "gate": "G1"
+        },
+        {
+          "id": "dependencies",
+          "title": "Map critical path and blocked prerequisites",
+          "skills": [
+            "cross-system-data"
+          ]
+        },
+        {
+          "id": "plan",
+          "title": "Break into small verified stages and rollback boundaries",
+          "skills": [
+            "task-routing"
+          ],
+          "gate": "G2"
+        },
+        {
+          "id": "risk-review",
+          "title": "Review cross-system risk, approvals and uncertain business rules",
+          "skills": [
+            "failure-analysis"
+          ]
+        },
+        {
+          "id": "deliver-plan",
+          "title": "Document stage owners, evidence conditions, and signoff requirements",
           "skills": [
             "task-routing"
           ]

@@ -53,7 +53,6 @@ Agent Evals, PR and release approvals, rollback and monitoring integrations.
 - [ ] Confirm real Copilot CLI delegation, multi-model review fan-out and model access in an authorized environment.
 - [ ] Build real app-driving verification adapters and operational Feature Map maintenance.
 - [ ] Measure agent Evals on blinded tasks and add authorized PR watch / handoff.
-
 ## v0.6 — compact model instructions and practical autonomy
 - [x] Replace repeated defensive instructions with short project context, banking invariants and autonomy/decision reporting.
 - [x] Risk-tier evidence requirements enforced by Python (low G4, medium G2/G4/G5, high all mandatory stage records).

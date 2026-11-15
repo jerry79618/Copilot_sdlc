@@ -45,7 +45,7 @@ python -m sdlc.mode status --run artifacts/worklist-TASK-VERIFY-001-<timestamp>.
 
 Workflow: **Goal → Task Contract → Select Playbook → Ordered Worklist → Skill per stage → G1–G5 Evidence → Review / Report**.
 
-Supported Playbooks: `feature`, `bug-fix`, `verification`, `investigation`, `refactor`, `performance`, `review`, `figure-it-out`. Unknown intent defaults to read-only planning. Evidence attachments follow risk policy; the mandatory G4 runtime check still rejects unavailable external systems. Testing-only tasks cannot silently switch to source-code modification.
+Supported Playbooks: `feature`, `bug-fix`, `verification`, `investigation`, `refactor`, `performance`, `review`, `figure-it-out`. Unknown intent defaults to read-only planning. Evidence attachments follow risk policy; the G4 runtime check still rejects unavailable external systems. Testing-only tasks cannot silently switch to source-code modification.
 
 Read [SDLC Mode operator guide](docs/sdlc-mode.md), [playbook catalog](playbooks/README.md) and [central Skill](.github/skills/sdlc-mode/SKILL.md). **Copilot agent routing and delegation still require a real authenticated Copilot CLI run**; Python is the deterministic worklist engine, not an AI runtime.
 
@@ -68,7 +68,7 @@ Risk-aware routing maps Task Contract risk (low/medium/high) and critical impact
     python -m sdlc.credit_estimate --scenario all
     python -m sdlc.credit_estimate --scenario medium --retries 1
 
-Agent roles: orchestrator (Claude Sonnet 5.5); standard developer (GPT-6.1 Terra); complex developer (GPT-6.1 Sol); tester (Sonnet 5.5); standard reviewer (Sonnet 5.5); banking analyst/reviewer (Opus 5.5); cross-reviewer (GPT-6.1 Terra). Model availability is organization-dependent; normal Agents may choose only from configured candidate models; high-risk specialist Agents remain pinned. This is still subject to bank model approval.
+Agent roles: orchestrator (Claude Sonnet 5.5); standard developer (GPT-6.1 Terra); complex developer (GPT-6.1 Sol); tester (Sonnet 5.5); standard reviewer (Sonnet 5.5); banking analyst/reviewer (Opus 5.5); cross-reviewer (GPT-6.1 Terra). Model availability is organization-dependent; normal Agents may choose only from configured candidate models; high-risk specialist Agents remain pinned, subject to bank model approval.
 
 Costs use GitHub's published per-million-token rates (1 AI credit = USD 0.01), not actual agent bills. See [Bank model policy and credit methodology](docs/banking-models-and-cost.md).
 

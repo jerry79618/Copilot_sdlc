@@ -18,7 +18,7 @@ separate GitHub Copilot Slash Command.
 
 \`sdlc.mode\` translates the catalog into a persistent worklist. It does not
 actually spawn LLM subagents; that is the job of the CLI's orchestrator agent
-and the related Skills. Record completion accurately; only the gates required by the effective risk tier need separate evidence artifacts. A G4 execution stage always needs real verification evidence. Optional stages may be SKIPPED with a written reason.
+and the related Skills. Record completion accurately; only gates required by the effective risk tier need separate evidence artifacts. A G4 execution stage always needs real verification evidence. Optional stages may be SKIPPED with a written reason.
 
 G1: scope and acceptance criteria.
 G2: verifiability and baseline.

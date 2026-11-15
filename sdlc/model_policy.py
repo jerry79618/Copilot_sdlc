@@ -12,7 +12,7 @@ from pathlib import Path
 from .contracts import ROOT, ContractError, load_json, validate_task
 
 RISK = {"low": 0, "medium": 1, "high": 2}
-PATTERN = re.compile(r"^([a-zA-Z][A-Za-z0-9]*):\s*(\S+)\s*$", re.M)
+PATTERN = re.compile(r"^([a-zA-Z][A-Za-z0-9]*):[ \t]*(.+?)[ \t]*$", re.M)
 
 
 def policy():
@@ -101,8 +101,11 @@ def check_agents(config=None):
         if fallback:
             if actual.get("model") != expected:
                 raise ContractError("Primary model mismatch for " + name)
-            expected_list = json.dumps([expected, *fallback])
-            if actual.get("models") != expected_list:
+            try:
+                authored_list = json.loads(actual.get("models", "null"))
+            except json.JSONDecodeError as exc:
+                raise ContractError("Invalid models list for " + name) from exc
+            if authored_list != [expected, *fallback]:
                 raise ContractError("Authored fallback mismatch for " + name)
             authored.extend(fallback)
         elif actual.get("model") != expected or "models" in actual:
