@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .contracts import ContractError, ROOT, load_json, validate_task
+from .model_policy import resolve as resolve_model_policy
 
 VALID_GATES = {"G1", "G2", "G3", "G4", "G5"}
 VALID_SKILLS = {"task-routing", "development", "verification", "cross-system-data", "failure-analysis", "cucumber-authoring"}
@@ -121,13 +122,15 @@ def choose_for_task(task, override=None):
 def make_worklist(task, override=None):
     chosen = choose_for_task(task, override)
     book = catalog()[chosen["playbook"]]
+    model_routing = resolve_model_policy(task)
     digest = hashlib.sha256(json.dumps(task, sort_keys=True, ensure_ascii=False).encode("utf-8")).hexdigest()
     return {
         "schema_version": 1, "task_id": task["id"],
         "task_sha256": digest, "intent": task["intent"],
         "environment": task["environment"], "playbook": book["id"],
         "route_reason": chosen["reason"], "status": "ACTIVE",
-        "approval_required": task.get("approval_required", False) or task["risk"] == "high",
+        "approval_required": model_routing["human_approval_required"],
+        "model_routing": model_routing,
         "limitations": [
             "Worklist records completion; it does not execute AI Skills automatically.",
             "G4 verifies only sandbox evidence for now; production integrations are unavailable.",

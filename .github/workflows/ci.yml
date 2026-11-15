@@ -23,6 +23,11 @@ jobs:
         run: python -m compileall -q sdlc tests
       - name: Run framework unit tests and routing evaluations
         run: python -m unittest discover -s tests -v
+      - name: Validate bank model policy and deterministic token estimates
+        run: |
+          python -m sdlc.model_policy check
+          python -m sdlc.model_policy route --task contracts/examples/banking-high-risk.json
+          python -m sdlc.credit_estimate --scenario all
       - name: Validate playbook catalog and route
         run: |
           python -m sdlc.mode catalog

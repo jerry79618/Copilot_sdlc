@@ -19,3 +19,10 @@ To plan: `python -m sdlc.cli plan --task <path>`.
 To verify the sandbox example: `python -m sdlc.cli verify --task contracts/examples/verification.json`.
 
 For Feature Maps with a Cucumber Binding, use .github/skills/cucumber-authoring/SKILL.md to build real Gherkin and Java Step Definitions, validate links, execute Maven and collect Cucumber evidence. Testing-only never authorizes modifying product code. Mock PASS is not real E2E.
+
+## Bank-grade model and evidence controls
+1. Resolve effective risk using `python -m sdlc.model_policy route --task TASK.json`; impact flags may escalate risk.
+2. The model list is a proposal pending bank approvals, not proof of approved providers. Required model locks prevent silent fallback, not bank policy enforcement.
+3. Financial transactions, ledger, privacy, authorization and cross-system money movement require specialist analysis, independent two-model review, and signed human approvals before release.
+4. Never expose passwords, production secrets, raw customer data or unredacted transactions to model prompts, tools or evidence.
+5. Use the cost estimator as a scenario model, not actual GitHub charges; monitor `/usage` and admin billing to calibrate.

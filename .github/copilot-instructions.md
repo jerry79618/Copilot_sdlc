@@ -11,3 +11,5 @@ This repository is the **orchestration framework**, not an existing Java/React a
 - Tests: `python -m unittest discover -s tests -v`. Full quickstart: `README.md`.
 - No approval bypass, no autonomous production deployment, no secret copying.
 - Run deterministic checks prior to claiming done; differentiate static review and executed tests.
+
+- Banking routing: `python -m sdlc.model_policy route --task TASK.json`. `config/banking-model-policy.json` is the model plan; bank organization allowlists and approvals must be enforced separately. Agents use `modelPolicy: required`; do not silently replace a blocked model. Sensitive changes require independent double review and authorized human sign-off. Never send real customer PII, production account data, or credentials to models.

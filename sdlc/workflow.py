@@ -1,5 +1,6 @@
 """Deterministic work routing. AI agents follow this contract; the code does not call an LLM."""
 from .contracts import validate_task
+from .model_policy import resolve as resolve_models
 
 WORKFLOWS = {
     "development": [
@@ -17,7 +18,8 @@ WORKFLOWS = {
 
 def plan(task):
     task = validate_task(task)
-    required_approval = task.get("approval_required", False) or task["risk"] == "high"
+    routing = resolve_models(task)
+    required_approval = routing["human_approval_required"]
     return {
         "task_id": task["id"],
         "intent": task["intent"],
@@ -25,6 +27,7 @@ def plan(task):
         "environment": task["environment"],
         "code_changes_allowed": task["allow_code_changes"],
         "approval_required": required_approval,
+        "model_routing": routing,
         "gates": ["G1-spec", "G2-verifiability", "G3-readiness",
                   "G4-execution", "G5-review-ci", "G6-release-approval"],
     }
