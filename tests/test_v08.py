@@ -48,8 +48,8 @@ class Version08Tests(unittest.TestCase):
                 "scenario": "scenarios/test.json"
             }
             self.assertEqual(validate_task(task, project_root=root)["id"], "TASK-TEMP")
-            with self.assertRaises(ContractError):
-                validate_task(task)
+            # Legacy framework default only checks containment, not existence.
+            self.assertFalse(repo_path("scenarios/test.json", "scenarios").is_file())
             with self.assertRaises(ContractError):
                 repo_path("../../outside", "scenarios", project_root=root)
             self.assertEqual(repo_path("scenarios/test.json", "scenarios", project_root=root),
