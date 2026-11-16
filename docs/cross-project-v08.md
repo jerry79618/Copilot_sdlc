@@ -1,4 +1,6 @@
-# v0.8 cross-project setup and migration (no plugin)
+# v0.8 cross-project setup (Poteto Mode)
+
+Canonical entry: `scripts/start-poteto.ps1` and `.github/skills/poteto-mode/SKILL.md`. Legacy `start-sdlc.ps1` and `sdlc-mode` remain aliases; see [Poteto Mode](poteto-mode.md).
 
 ## Goal
 
@@ -18,8 +20,8 @@ cd D:\git\Copilot_sdlc
 git switch main
 git pull --ff-only
 
-.\scripts\start-sdlc.ps1 -ProjectRoot "D:\git\bank-application" -CheckOnly
-.\scripts\start-sdlc.ps1 -ProjectRoot "D:\git\bank-application" -Isolated -Goal "幫我補齊查詢測試，不要修改產品程式碼"
+.\scripts\start-poteto.ps1 -ProjectRoot "D:\git\bank-application" -CheckOnly
+.\scripts\start-poteto.ps1 -ProjectRoot "D:\git\bank-application" -Isolated -Goal "幫我補齊查詢測試，不要修改產品程式碼"
 ~~~
 
 The launcher runs read-only doctor and goal preparation before Copilot starts.
