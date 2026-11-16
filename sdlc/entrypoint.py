@@ -59,6 +59,7 @@ def _project_shadow_conflicts(project):
     conflicts = []
     for relative, kind in (
         (".github/agents/orchestrator.agent.md", "agent"),
+        (".github/skills/poteto-mode/SKILL.md", "skill"),
         (".github/skills/sdlc-mode/SKILL.md", "skill"),
     ):
         local = project / relative
@@ -75,6 +76,7 @@ def _source_inventory(project, home):
     results = []
     for name, relative, user_relative in (
         ("orchestrator", ".github/agents/orchestrator.agent.md", "agents/orchestrator.agent.md"),
+        ("poteto-mode", ".github/skills/poteto-mode/SKILL.md", "skills/poteto-mode/SKILL.md"),
         ("sdlc-mode", ".github/skills/sdlc-mode/SKILL.md", "skills/sdlc-mode/SKILL.md"),
     ):
         options = (("framework", ROOT / relative),
@@ -96,6 +98,9 @@ def doctor(project_root=".", copilot_home=None):
         raise ContractError("Framework Playbook catalog is empty")
     home = Path(copilot_home).expanduser().resolve() if copilot_home else _copilot_home()
     conflicts = _shadow_conflicts(home) + _project_shadow_conflicts(project)
+    canonical_mode = ROOT / ".github" / "skills" / "poteto-mode" / "SKILL.md"
+    if not canonical_mode.is_file():
+        raise ContractError("Canonical Poteto Mode Skill is missing: " + str(canonical_mode))
     bridge_health = verify_sources()
     return {
         "status": "BLOCKED" if conflicts else "READY",
@@ -104,6 +109,9 @@ def doctor(project_root=".", copilot_home=None):
         "catalog_path": str((ROOT / "playbooks" / "catalog.json").resolve()),
         "playbook_count": len(books),
         "playbook_ids": list(books),
+        "mode": {"name": "poteto-mode", "kind": "copilot-agent-skill",
+                 "skill_path": str(canonical_mode.resolve()),
+                 "agent": "orchestrator", "legacy_skill": "sdlc-mode"},
         "copilot_home": str(home),
         "shadow_conflicts": conflicts,
         "source_candidates": _source_inventory(project, home),
@@ -137,6 +145,9 @@ def route(goal, project_root="."):
         "framework_root": str(ROOT.resolve()),
         "catalog_path": str((ROOT / "playbooks" / "catalog.json").resolve()),
         "decision": decision,
+        "mode": {"name": "poteto-mode", "kind": "copilot-agent-skill",
+                 "skill_path": str((ROOT / ".github" / "skills" / "poteto-mode" / "SKILL.md").resolve()),
+                 "agent": "orchestrator"},
         "pstack_reference": for_playbook(decision["playbook"]),
         "playbook_description": selected.get("description", ""),
         "stages": stages,

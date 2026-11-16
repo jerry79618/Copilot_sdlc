@@ -9,5 +9,5 @@ This is a **bank-oriented AI SDLC orchestration framework under development**, n
 
 ## Autonomy and delivery
 Within the user's authorized scope, choose normal engineering approaches independently. Investigate uncertainty, prototype when useful, and ask only for genuine business decisions, privileged actions or irreversible consequences.
-Use `.github/skills/sdlc-mode/SKILL.md` for substantive SDLC tasks. Playbooks, risk policy and tests govern execution; these instructions are not a substitute for CI or access controls.
+Use `.github/skills/poteto-mode/SKILL.md` as the canonical goal-first Skill; `sdlc-mode` is the legacy alias. Playbooks, risk policy and tests govern execution; these instructions are not a substitute for CI or access controls.
 Finish concisely: result, tests/evidence, key decisions, significant rejected alternatives and unresolved risks.

@@ -1,4 +1,6 @@
-# SDLC Mode v0.2 — Copilot CLI front door
+# Legacy SDLC Mode v0.2 — historical
+
+This is an older design document. New users should follow [Poteto Mode](poteto-mode.md) and `.github/skills/poteto-mode/SKILL.md`. Internal `python -m sdlc.mode` is still supported.
 
 Independent orchestration inspired by Lauren Tan's **goal → playbook → task list →
 situational Skills → real verification** design. This is NOT pstack or the
@@ -42,9 +44,7 @@ Alternatively run interactive \`copilot\` and select \`/agent\` → \`orchestrat
 then state only your **goal + done check + proof + constraints**. The agent loads
 \`.github/skills/sdlc-mode/SKILL.md\`.
 
-**Do not type \`/poteto-mode\` in Copilot CLI expecting it to work.** That command
-belongs to another host. \`sdlc-mode\` is a documented Copilot Skill and \`orchestrator\`
-is a Copilot Custom Agent. There is no new custom slash command registered here.
+**Current behavior:** `/poteto-mode` refers to a discoverable Copilot Agent Skill in a prompt, not to Cursor's plugin slash-command implementation. The older `sdlc-mode` is a legacy alias.
 
 ## Deterministic commands (stdlib Python 3.11+)
 
