@@ -1,5 +1,5 @@
 """Deterministic work routing. AI agents follow this contract; the code does not call an LLM."""
-from .contracts import validate_task, test_changes_allowed
+from .contracts import ROOT, validate_task, test_changes_allowed
 from .model_policy import resolve as resolve_models
 
 WORKFLOWS = {
@@ -16,9 +16,9 @@ WORKFLOWS = {
 }
 
 
-def plan(task):
-    task = validate_task(task)
-    routing = resolve_models(task)
+def plan(task, project_root=ROOT):
+    task = validate_task(task, project_root=project_root)
+    routing = resolve_models(task, project_root=project_root)
     required_approval = routing["human_approval_required"]
     return {
         "task_id": task["id"],

@@ -18,19 +18,20 @@ def run(argv=None):
     for command in ("validate", "plan", "verify"):
         p = sub.add_parser(command)
         p.add_argument("--task", required=True, help="Task Contract JSON file")
+        p.add_argument("--project-root", default=str(ROOT), help="Task scenario root (framework demo by default)")
         if command == "verify":
             p.add_argument("--output-dir", default="artifacts", help="Evidence output directory")
     args = parser.parse_args(argv)
     try:
-        task = validate_task(load_json(args.task))
+        task = validate_task(load_json(args.task), project_root=args.project_root)
         if args.command == "validate":
             if task.get("scenario"):
-                validate_scenario(load_json(repo_path(task["scenario"], "scenarios")))
+                validate_scenario(load_json(repo_path(task["scenario"], "scenarios", args.project_root)))
             result = {"status": "PASS", "task_id": task["id"], "message": "Contract and scenario are valid"}
         elif args.command == "plan":
-            result = plan(task)
+            result = plan(task, project_root=args.project_root)
         else:
-            result = verify(task)
+            result = verify(task, project_root=args.project_root)
             # Keep evidence inside the active working directory, but never overwrite existing runs.
             out = Path(args.output_dir)
             out.mkdir(parents=True, exist_ok=True)

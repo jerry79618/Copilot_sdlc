@@ -21,12 +21,15 @@ def load_json(path):
         raise ContractError("Unable to read JSON from " + str(path) + ": " + str(exc)) from exc
 
 
-def repo_path(relative, folder):
+def repo_path(relative, folder, project_root=ROOT):
     """Allow only repository-relative files under a trusted directory."""
     if not isinstance(relative, str) or not relative:
         raise ContractError("A repository-relative file path is required")
-    target = (ROOT / relative).resolve()
-    safe_root = (ROOT / folder).resolve()
+    root = Path(project_root).resolve()
+    if not root.is_dir():
+        raise ContractError("Project root is not a directory: " + str(root))
+    target = (root / relative).resolve()
+    safe_root = (root / folder).resolve()
     if not target.is_relative_to(safe_root):
         raise ContractError("File must be under " + folder + ": " + relative)
     return target
@@ -38,7 +41,7 @@ def _non_empty_strings(value):
     )
 
 
-def validate_task(task):
+def validate_task(task, project_root=ROOT):
     if not isinstance(task, dict):
         raise ContractError("Task must be a JSON object")
     if not isinstance(task.get("id"), str) or not ID_RE.fullmatch(task["id"]):
@@ -69,7 +72,7 @@ def validate_task(task):
     if task["intent"] != "investigation" and not scenario:
         raise ContractError("Development and verification tasks need a scenario")
     if scenario:
-        repo_path(scenario, "scenarios")
+        repo_path(scenario, "scenarios", project_root)
     if "approval_required" in task and type(task["approval_required"]) is not bool:
         raise ContractError("approval_required must be boolean")
     return task

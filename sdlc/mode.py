@@ -91,7 +91,15 @@ def classify(goal, intent=None, override=None):
             raise ContractError("Unknown playbook: " + override)
         chosen, reason = override, "explicit playbook"
     elif read_only:
-        chosen, reason = "investigation", "explicit read-only constraint"
+        # A request to write tests without product edits is still verification.
+        test_request = any(s in text for s in (
+            "測試", "驗證", "回歸", "cucumber", "junit", "test"
+        ))
+        investigation_only = any(s in text for s in (
+            "先調查", "只調查", "只分析", "investigate only", "analysis only"
+        ))
+        chosen = "verification" if test_request and not investigation_only else "investigation"
+        reason = "test-only constraint" if chosen == "verification" else "explicit read-only constraint"
     elif matched:
         chosen, reason = matched[0][0], "keyword: " + matched[0][1]
     else:
@@ -114,18 +122,18 @@ def classify(goal, intent=None, override=None):
     }
 
 
-def choose_for_task(task, override=None):
-    validate_task(task)
+def choose_for_task(task, override=None, project_root=ROOT):
+    validate_task(task, project_root=project_root)
     result = classify(task["goal"], task["intent"], override or task.get("playbook"))
     if result["intent"] != task["intent"]:
         raise ContractError("Selected playbook conflicts with Task Contract")
     return result
 
 
-def make_worklist(task, override=None):
-    chosen = choose_for_task(task, override)
+def make_worklist(task, override=None, project_root=ROOT):
+    chosen = choose_for_task(task, override, project_root=project_root)
     book = catalog()[chosen["playbook"]]
-    model_routing = resolve_model_policy(task)
+    model_routing = resolve_model_policy(task, project_root=project_root)
     effective_risk = model_routing["effective_risk"]
     evidence_gates = set(model_routing["required_evidence_gates"])
     full_evidence = model_routing["all_stage_evidence"]
@@ -133,6 +141,7 @@ def make_worklist(task, override=None):
     return {
         "schema_version": 1, "task_id": task["id"],
         "task_sha256": digest, "intent": task["intent"],
+        "project_root": str(Path(project_root).resolve()),
         "environment": task["environment"], "playbook": book["id"],
         "route_reason": chosen["reason"], "status": "ACTIVE",
         "approval_required": model_routing["human_approval_required"],
@@ -191,6 +200,7 @@ def update_worklist(worklist, stage_id, outcome, evidence_path=None, reason=None
                 if proof.get("status") != "PASS":
                     raise ContractError("Verification evidence must contain PASS")
                 if (worklist["environment"] != "demo" or
+                        Path(worklist.get("project_root", ROOT)).resolve() != ROOT.resolve() or
                         proof.get("classification") not in {"DEMO_VERIFIED", "CUCUMBER_DEMO_VERIFIED"}):
                     raise ContractError("Real-system verification adapters are not implemented")
                 if (proof.get("classification") == "CUCUMBER_DEMO_VERIFIED" and
@@ -235,6 +245,7 @@ def run_cli(argv=None):
     s.add_argument("--task", required=True)
     s.add_argument("--playbook")
     s.add_argument("--output-dir", default="artifacts")
+    s.add_argument("--project-root", default=str(ROOT), help="Root containing task scenarios; default framework demo")
     q = sub.add_parser("checkpoint", help="Read-only progress snapshot for pause/resume")
     q.add_argument("--run", required=True)
     v = sub.add_parser("status", help="Display the next required stage")
@@ -254,7 +265,7 @@ def run_cli(argv=None):
             result = classify(args.goal, args.intent, args.playbook)
         elif args.command == "start":
             task = load_json(args.task)
-            run = make_worklist(task, args.playbook)
+            run = make_worklist(task, args.playbook, project_root=args.project_root)
             now = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
             path = Path(args.output_dir) / ("worklist-" + task["id"] + "-" + now + ".json")
             save_json(path, run, exclusive=True)

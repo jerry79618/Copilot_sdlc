@@ -24,8 +24,8 @@ def policy():
     return p
 
 
-def resolve(task, config=None):
-    validate_task(task)
+def resolve(task, config=None, project_root=ROOT):
+    validate_task(task, project_root=project_root)
     config = config or policy()
     effective = task["risk"]
     causes = []
