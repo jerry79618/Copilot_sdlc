@@ -1,9 +1,30 @@
 # Copilot SDLC — Enterprise AI SDLC v0.8
 
-**GitHub Copilot CLI-first framework: goal-first SDLC Mode, eleven Playbooks, staged Skills, development/testing separation and auditable verification evidence.**
+**GitHub Copilot CLI-first framework: goal-first Poteto Mode, eleven Playbooks, staged Skills, development/testing separation and auditable verification evidence.**
 
 > Status: **executable initial scaffold**, not a production-ready autonomous deployment platform. The included three-system journey is a **local, in-memory simulation**. No bank, payment, external API or production integration is configured. This project is an independent implementation inspired by Lauren Tan's verification-first ideas, not an official pstack port.
 
+
+## Poteto Mode — native Copilot CLI entry
+
+The canonical goal-first mode is the **native `poteto-mode` Agent Skill** in
+`.github/skills/poteto-mode/SKILL.md`. The `orchestrator` custom Agent,
+Python `sdlc.mode` engine, eleven Playbooks and bank gates are unchanged.
+This is our own Copilot adaptation, not Lauren Tan's official Cursor Plugin.
+
+~~~powershell
+cd D:\git\Copilot_sdlc
+.\scripts\start-poteto.ps1 -ProjectRoot "D:\git\bank-application" -CheckOnly
+.\scripts\start-poteto.ps1 -ProjectRoot "D:\git\bank-application" -Isolated -Goal "補齊查詢測試，不要修改產品程式碼"
+~~~
+
+Within a session where the Framework is visible, inspect `/skills list` and
+`/skills info poteto-mode`. To call it explicitly, say `Use the /poteto-mode
+skill to ...` in the prompt. That refers to Copilot's Agent Skill, not the
+same slash-command implementation as the Cursor plugin.
+
+Legacy `scripts/start-sdlc.ps1` and `sdlc-mode` continue as compatibility
+aliases. See [Poteto Mode guide](docs/poteto-mode.md).
 
 ## pstack upstream source integration (v0.8)
 
@@ -48,9 +69,9 @@ Normal agents have ordered **model candidates** under `modelPolicy: required`, n
 
 See [v0.6 rationale and operating rules](docs/lean-instructions-v06.md).
 
-## SDLC Mode v0.2 — one goal, routed Playbook
+## Legacy SDLC Mode v0.2 — historical flow
 
-The default entry point is the **`orchestrator` Copilot CLI agent + `sdlc-mode` Skill**, inspired by Lauren Tan's goal-first `/poteto-mode`. This is our own implementation: `/poteto-mode` is **not** a GitHub Copilot CLI command.
+The current entry point is the native **`poteto-mode` Skill + `orchestrator` Agent**. The old `sdlc-mode` Skill is a compatibility alias; `/poteto-mode` in Copilot CLI is a Skill reference, not the Cursor plugin command.
 
 ```bash
 # Agent-facing invocation (requires authenticated Copilot CLI)
@@ -68,7 +89,7 @@ Workflow: **Goal → Task Contract → Select Playbook → Ordered Worklist → 
 
 Supported Playbooks: `feature`, `bug-fix`, `verification`, `investigation`, `refactor`, `performance`, `review`, `figure-it-out`. Unknown intent defaults to read-only planning. Evidence attachments follow risk policy; the G4 runtime check still rejects unavailable external systems. Testing-only tasks cannot silently switch to source-code modification.
 
-Read [SDLC Mode operator guide](docs/sdlc-mode.md), [playbook catalog](playbooks/README.md) and [central Skill](.github/skills/sdlc-mode/SKILL.md). **Copilot agent routing and delegation still require a real authenticated Copilot CLI run**; Python is the deterministic worklist engine, not an AI runtime.
+Read the [Poteto Mode guide](docs/poteto-mode.md), [playbook catalog](playbooks/README.md), and [canonical Skill](.github/skills/poteto-mode/SKILL.md); the original [SDLC guide](docs/sdlc-mode.md) is historical. **Copilot agent routing and delegation still require a real authenticated Copilot CLI run**; Python is the deterministic worklist engine, not an AI runtime.
 
 ## Cucumber BDD + Feature Map (v0.3)
 
@@ -95,7 +116,7 @@ Costs use GitHub's published per-million-token rates (1 AI credit = USD 0.01), n
 
 ## v0.5 — closer to Lauren Tan's workflow concepts
 
-The goal-first SDLC Mode now follows a stronger sequence: **Goal + Done Check → Principles → Playbook → Stage-specific Skills → Feature Map discovery → Real Verification Evidence → Independent Review → Reflection + Evaluations**. This adapts pstack's patterns without claiming the Cursor slash command works in Copilot CLI.
+The goal-first Poteto Mode follows a stronger sequence: **Goal + Done Check → Principles → Playbook → Stage-specific Skills → Feature Map discovery → Real Verification Evidence → Independent Review → Reflection + Evaluations**. This adapts pstack's patterns without claiming the Cursor slash command works in Copilot CLI.
 
 Additional Playbooks: prototype, skill-eval, and multi-phase planning (total **11**, not a reimplementation of pstack's 23). Existing eight Playbooks and the banking risk gates remain intact.
 
