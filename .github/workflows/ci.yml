@@ -47,6 +47,11 @@ jobs:
         run: |
           python -m sdlc.entrypoint doctor --project-root .
           python -m sdlc.entrypoint route --project-root . --goal "修正查詢錯誤"
+      - name: Verify all 23 original pstack Playbooks and main-agent strategy
+        run: |
+          python -m sdlc.poteto_strategy --project-root . --goal "修正申請狀態查詢錯誤"
+          python -m sdlc.poteto_strategy --project-root . --goal "長期整個專案協調多個 PR"
+          python -m sdlc.poteto_strategy --project-root . --goal "請幫我合併 PR" --upstream-playbook shipping
       - name: Verify pinned original pstack and bridge routing
         run: |
           python -m sdlc.pstack_bridge check
@@ -109,3 +114,17 @@ jobs:
             artifacts/cucumber-evidence.json
           if-no-files-found: ignore
           retention-days: 7
+
+  poteto-powershell:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Preflight canonical and legacy Poteto launchers
+        shell: pwsh
+        run: |
+          .\scripts\start-poteto.ps1 -ProjectRoot . -CheckOnly -Goal "修正申請查詢錯誤"
+          .\scripts\start-sdlc.ps1 -ProjectRoot . -CheckOnly -Goal "補齊 Cucumber 測試"
