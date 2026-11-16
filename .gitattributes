@@ -1,0 +1,2 @@
+# Preserve upstream byte-for-byte pstack sources on Windows (Git autocrlf may otherwise change blob contents).
+vendor/pstack/** text eol=lf
