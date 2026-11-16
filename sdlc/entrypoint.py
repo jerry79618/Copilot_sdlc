@@ -157,7 +157,7 @@ def main(argv=None):
         else:
             result = prepare(args.goal, args.project_root)
         print(json.dumps(result, ensure_ascii=False, indent=2))
-        return 2 if result["status"] == "BLOCKED" else 0
+        return 2 if result.get("status") == "BLOCKED" else 0
     except (ContractError, OSError, ValueError) as exc:
         print(json.dumps({"status": "ERROR", "reason": str(exc)}, ensure_ascii=False), file=sys.stderr)
         return 3
