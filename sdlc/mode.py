@@ -114,7 +114,7 @@ def classify(goal, intent=None, override=None):
                 raise ContractError("Playbook " + chosen + " conflicts with declared intent " + intent)
             chosen, reason = INTENT_DEFAULTS[intent], "declared intent overrides keywords"
     confidence = ("explicit" if override or read_only or reason.startswith("declared")
-                  else "suggested" if matched else "needs-review")
+                  else "suggested" if matched or reason == "Chinese bug-repair intent" else "needs-review")
     return {
         "playbook": chosen, "intent": books[chosen]["intent"],
         "reason": reason, "confidence": confidence,
