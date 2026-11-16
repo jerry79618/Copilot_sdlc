@@ -43,6 +43,11 @@ jobs:
           python -m sdlc.discovery health --project-root .
           python -m sdlc.feature_map validate --project-root .
           python -m sdlc.mode route --goal "補齊 Cucumber 測試，不要修改產品程式碼"
+      - name: Verify pinned original pstack and bridge routing
+        run: |
+          python -m sdlc.pstack_bridge check
+          python -m sdlc.pstack_bridge route --goal "修正查詢 bug"
+          python -m sdlc.entrypoint route --project-root . --goal "補齊測試，不要修改產品程式碼"
       - name: Validate playbook catalog and route
         run: |
           python -m sdlc.mode catalog
