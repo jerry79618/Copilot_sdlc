@@ -1,4 +1,4 @@
-# Copilot SDLC — Enterprise AI SDLC v0.6
+# Copilot SDLC — Enterprise AI SDLC v0.7
 
 **GitHub Copilot CLI-first framework: goal-first SDLC Mode, eleven Playbooks, staged Skills, development/testing separation and auditable verification evidence.**
 
