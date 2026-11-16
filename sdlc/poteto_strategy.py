@@ -7,6 +7,7 @@ real host environment and must never be inferred from this recommendation.
 import argparse
 import json
 import sys
+from pathlib import Path
 
 from .contracts import ContractError, ROOT, load_json
 from .mode import classify
@@ -133,7 +134,7 @@ def _pick_original(goal, default):
 def propose(goal, project_root=".", upstream_playbook=None):
     if not isinstance(goal, str) or not goal.strip():
         raise ContractError("A concrete goal is required for Poteto Mode")
-    root = ROOT if project_root is None else __import__("pathlib").Path(project_root).expanduser().resolve()
+    root = ROOT if project_root is None else Path(project_root).expanduser().resolve()
     if not root.is_dir():
         raise ContractError("Target project root does not exist: " + str(root))
     decision = classify(goal)

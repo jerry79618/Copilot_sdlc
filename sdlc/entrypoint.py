@@ -13,6 +13,7 @@ from .contracts import ContractError, ROOT
 from .mode import catalog, classify
 from .project_context import prepare
 from .pstack_bridge import for_playbook, verify_sources
+from .poteto_strategy import propose
 
 
 def _root(project_root):
@@ -111,11 +112,14 @@ def doctor(project_root=".", copilot_home=None):
         "playbook_ids": list(books),
         "mode": {"name": "poteto-mode", "kind": "copilot-agent-skill",
                  "skill_path": str(canonical_mode.resolve()),
-                 "agent": "orchestrator", "legacy_skill": "sdlc-mode"},
+                 "owner": "session-main-agent", "optional_coordinator": "orchestrator",
+                 "legacy_skill": "sdlc-mode"},
         "copilot_home": str(home),
         "shadow_conflicts": conflicts,
         "source_candidates": _source_inventory(project, home),
         "pstack_vendor_health": bridge_health,
+        "default_workflow_owner": "session-main-agent",
+        "dedicated_orchestrator_required": False,
         "note": "Static sources only; actual loaded Agent/Skill, CLI model permissions and delegation are NOT verified.",
     }
 
@@ -147,8 +151,9 @@ def route(goal, project_root="."):
         "decision": decision,
         "mode": {"name": "poteto-mode", "kind": "copilot-agent-skill",
                  "skill_path": str((ROOT / ".github" / "skills" / "poteto-mode" / "SKILL.md").resolve()),
-                 "agent": "orchestrator"},
+                 "owner": "session-main-agent", "optional_coordinator": "orchestrator"},
         "pstack_reference": for_playbook(decision["playbook"]),
+        "execution_strategy": propose(goal, project),
         "playbook_description": selected.get("description", ""),
         "stages": stages,
         "note": "Route is a hint, not permission to edit or proof that agents executed.",

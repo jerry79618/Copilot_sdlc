@@ -5,7 +5,8 @@ param(
     [string]$ProjectRoot,
     [string]$Goal,
     [switch]$CheckOnly,
-    [switch]$Isolated
+    [switch]$Isolated,
+    [switch]$UseLegacyOrchestrator
 )
 
 $ErrorActionPreference = "Stop"
@@ -49,9 +50,13 @@ try {
         }
     }
     if (-not $CheckOnly) {
-        $cliArguments = @("--agent=orchestrator", "--add-dir=$frameworkRoot")
+        # Main Copilot session owns the workflow; a dedicated coordinator is opt-in.
+        $cliArguments = @("--add-dir=$frameworkRoot")
+        if ($UseLegacyOrchestrator) {
+            $cliArguments += "--agent=orchestrator"
+        }
         if ($PSBoundParameters.ContainsKey("Goal")) {
-            $cliArguments += @("--prompt", $Goal)
+            $cliArguments += @("--prompt", "Use the /poteto-mode skill to accomplish this goal: $Goal")
         }
         & copilot @cliArguments
         if ($LASTEXITCODE -ne 0) {

@@ -4,7 +4,8 @@ param(
     [string]$ProjectRoot,
     [string]$Goal,
     [switch]$CheckOnly,
-    [switch]$Isolated
+    [switch]$Isolated,
+    [switch]$UseLegacyOrchestrator
 )
 
 & (Join-Path $PSScriptRoot "start-poteto.ps1") @PSBoundParameters
