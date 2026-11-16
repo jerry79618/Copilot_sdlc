@@ -16,8 +16,9 @@ cd D:\git\Copilot_sdlc
 Use `-Isolated` when you do not want the default `~/.copilot` personal
 Agents/Skills in the same session; that profile will need its own login.
 Read [Poteto Mode setup](poteto-mode.md) and [cross-project setup](cross-project-v08.md).
-The user only supplies an outcome and authorization scope; Orchestrator must
-verify the real Playbook through `sdlc.entrypoint`.
+The user only supplies an outcome and authorization scope. The **main Copilot agent**
+owns Poteto Mode and verifies its real Playbook through `sdlc.entrypoint`; the
+optional `orchestrator` is for standing multi-PR programs, not every task.
 The v0.8 launcher also runs entrypoint prepare to produce a read-only draft
 Task Context. See [v0.8 migration](cross-project-v08.md).
 
