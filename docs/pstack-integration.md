@@ -8,8 +8,9 @@
 - License: **MIT**, full upstream notice retained at vendor/pstack/LICENSE.
 - Version manifest: vendor/pstack/MANIFEST.json, with Git blob hashes for every file.
 - The vendored snapshot includes the **original pstack mode, all 23 playbook text files,
-  and 18 selected original method/verification/principle Skill files** (44 upstream files
-  including manifest metadata and LICENSE).
+  and 18 selected original method/verification/principle Skill files** (44 imported
+  upstream files total, including LICENSE and plugin.json; the local MANIFEST
+  is an additional provenance file).
 - It is a **curated source reference**, not the full 560-file pstack plugin.
   Original material inside vendor/pstack is left unchanged.
 - This is an independent adaptation for Copilot CLI, not an official pstack release.
