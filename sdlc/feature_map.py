@@ -3,6 +3,7 @@ import argparse
 import json
 import re
 import sys
+from pathlib import Path
 from .contracts import ROOT, ContractError, load_json, repo_path, validate_scenario, validate_task
 
 HEADERS = [
@@ -13,8 +14,8 @@ FENCE = re.compile(r"\x60{3}json\s*(\{.*?\})\s*\x60{3}", re.S)
 SAFE_ID = re.compile(r"^[a-z][a-z0-9-]*$")
 
 
-def load_feature_map(relative):
-    source = repo_path(relative, "docs/feature-map")
+def load_feature_map(relative, project_root=ROOT):
+    source = repo_path(relative, "docs/feature-map", project_root)
     if not source.is_file():
         raise ContractError("Feature Map does not exist: " + relative)
     markdown = source.read_text(encoding="utf-8")
@@ -35,16 +36,21 @@ def load_feature_map(relative):
         ("gherkin", "cucumber"), ("scenario", "scenarios"),
         ("contract", "contracts"), ("fixture", "fixtures")
     ):
-        target = repo_path(binding.get(key), folder)
+        value = binding.get(key)
+        if key == "gherkin" and isinstance(value, str) and value.replace(chr(92), "/").startswith("src/test/"):
+            folder = "src/test"
+        target = repo_path(value, folder, project_root)
         if not target.is_file():
             raise ContractError("Feature Map target missing: " + key)
-    gherkin = repo_path(binding["gherkin"], "cucumber").read_text(encoding="utf-8")
+    gherkin_path = binding["gherkin"]
+    gherkin_folder = "src/test" if gherkin_path.replace(chr(92), "/").startswith("src/test/") else "cucumber"
+    gherkin = repo_path(gherkin_path, gherkin_folder, project_root).read_text(encoding="utf-8")
     if not binding["gherkin"].endswith(".feature") or "@feature_" + identifier.replace("-", "_") not in gherkin:
         raise ContractError("Gherkin has no matching Feature Map tag")
     if "Scenario:" not in gherkin:
         raise ContractError("Feature Map points to an empty Gherkin feature")
-    scenario = validate_scenario(load_json(repo_path(binding["scenario"], "scenarios")))
-    task = validate_task(load_json(repo_path(binding["contract"], "contracts")))
+    scenario = validate_scenario(load_json(repo_path(binding["scenario"], "scenarios", project_root)))
+    task = validate_task(load_json(repo_path(binding["contract"], "contracts", project_root)), project_root=project_root)
     if scenario["id"] != binding.get("scenario_id") or task.get("scenario") != binding["scenario"]:
         raise ContractError("Scenario/Task Contract links mismatch")
     if set(binding.get("systems", [])) != set(scenario["systems"]):
@@ -60,17 +66,21 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Validate Feature Map / Gherkin link")
     parser.add_argument("command", choices=["validate", "list"])
     parser.add_argument("--feature", help="ID of Feature Map to check; default all")
+    parser.add_argument("--project-root", default=str(ROOT))
     args = parser.parse_args(argv)
     try:
+        project = Path(args.project_root).resolve()
+        if not project.is_dir():
+            raise ContractError("Invalid project root")
         if args.feature:
             if not SAFE_ID.fullmatch(args.feature):
                 raise ContractError("Invalid feature id")
             paths = ["docs/feature-map/" + args.feature + ".md"]
         else:
-            paths = [p.relative_to(ROOT).as_posix() for p in sorted((ROOT / "docs/feature-map").glob("*.md"))]
+            paths = [p.relative_to(project).as_posix() for p in sorted((project / "docs/feature-map").glob("*.md"))]
         if not paths:
             raise ContractError("No Feature Map files found")
-        result = [load_feature_map(path) for path in paths]
+        result = [load_feature_map(path, project_root=project) for path in paths]
         print(json.dumps({"status": "PASS", "features": result}, ensure_ascii=False, indent=2))
         return 0
     except (ValueError, OSError, ContractError) as exc:

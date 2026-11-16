@@ -1,5 +1,6 @@
 """Evidence-first sandbox verification, with no external-system mutation."""
 from datetime import datetime, timezone
+from pathlib import Path
 
 from .contracts import ContractError, ROOT, load_json, order_steps, repo_path, validate_scenario, validate_task
 
@@ -47,12 +48,12 @@ class DemoAdapter:
         return {"id": step["id"], "system": step["system"], "operation": operation, "status": "PASS"}
 
 
-def verify(task):
+def verify(task, project_root=ROOT):
     """Always return an evidence report; no execution against remote systems."""
-    task = validate_task(task)
+    task = validate_task(task, project_root=project_root)
     if not task.get("scenario"):
         raise ContractError("This task has no executable scenario")
-    scenario = validate_scenario(load_json(repo_path(task["scenario"], "scenarios")))
+    scenario = validate_scenario(load_json(repo_path(task["scenario"], "scenarios", project_root)))
     report = {
         "task_id": task["id"], "scenario_id": scenario["id"],
         "environment": task["environment"],
@@ -64,7 +65,8 @@ def verify(task):
         report["classification"] = "CONFIGURATION"
         report["reason"] = "Scenario references systems absent from Task Contract"
         return report
-    if task["environment"] != "demo" or scenario.get("adapter") != "demo":
+    if (Path(project_root).resolve() != ROOT.resolve() or
+            task["environment"] != "demo" or scenario.get("adapter") != "demo"):
         report["classification"] = "EXTERNAL_ADAPTER_UNAVAILABLE"
         report["reason"] = "Non-demo systems require a separately implemented and approved adapter"
         return report

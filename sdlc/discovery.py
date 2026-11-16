@@ -133,12 +133,13 @@ def map_health(project=ROOT):
     findings = []
     for file in maps:
         relative = file.relative_to(root).as_posix()
-        if root != ROOT:
-            findings.append({"path": relative, "status": "UNVERIFIED_EXTERNAL_ROOT",
-                             "note": "Binding validation requires repository adapter; review manually"})
+        raw = file.read_text(encoding="utf-8", errors="replace")
+        if "## SDLC Cucumber Binding" not in raw:
+            findings.append({"path": relative, "status": "CANDIDATE_REVIEW_REQUIRED",
+                             "note": "No executable binding; business and runtime review needed"})
             continue
         try:
-            verified = load_feature_map(relative)
+            verified = load_feature_map(relative, project_root=root)
             findings.append({"path": relative, "status": "STATIC_LINKS_VALID",
                              "feature_id": verified["feature_id"],
                              "note": "Source links valid; runtime correctness NOT established"})
@@ -151,15 +152,15 @@ def main(argv=None):
     p = argparse.ArgumentParser(description="Read-only Java/Cucumber Feature Map discovery")
     p.add_argument("command", choices=["inspect", "candidates", "health"])
     p.add_argument("--project-root", default=str(ROOT))
-    p.add_argument("--output-dir", default="artifacts/discovery")
+    p.add_argument("--output-dir", help="Candidate directory inside selected project; defaults to artifacts/discovery")
     args = p.parse_args(argv)
     try:
         root = Path(args.project_root).resolve()
         if not root.is_dir():
             raise ContractError("Invalid project root")
-        output = Path(args.output_dir).resolve()
-        if not output.is_relative_to(ROOT):
-            raise ContractError("Discovery output must stay within this repository")
+        output = (Path(args.output_dir) if args.output_dir else root / "artifacts" / "discovery").resolve()
+        if not output.is_relative_to(root / "artifacts"):
+            raise ContractError("Candidate output must stay inside the target project's artifacts directory")
         data = inspect(root) if args.command != "health" else {
             "project": str(root), "map_health": map_health(root),
         }

@@ -41,6 +41,13 @@ try {
     if ($LASTEXITCODE -ne 0) {
         throw "SDLC preflight failed. Resolve shadow_conflicts and retry."
     }
+    if ($PSBoundParameters.ContainsKey("Goal")) {
+        # Read-only context preparation; does not write a Task Contract.
+        & python -m sdlc.entrypoint prepare --project-root $project --goal $Goal
+        if ($LASTEXITCODE -ne 0) {
+            throw "SDLC task-context preparation failed."
+        }
+    }
     if (-not $CheckOnly) {
         $cliArguments = @("--agent=orchestrator", "--add-dir=$frameworkRoot")
         if ($PSBoundParameters.ContainsKey("Goal")) {
