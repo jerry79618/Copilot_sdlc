@@ -1,28 +1,43 @@
 # Operator guide
 
 ## Requirements
-Python 3.11+, Git, optional GitHub Copilot CLI with a valid account. No pip dependencies for the demo.
+Python 3.11+, Git, and GitHub Copilot CLI with a valid authorized account for
+Agent use. No Python package installation is needed when using the v0.7
+PowerShell launcher.
 
-## Run locally
+## Launch against a sibling Java repository (Windows)
+
+```powershell
+cd D:\git\Copilot_sdlc
+.\scripts\start-sdlc.ps1 -ProjectRoot "D:\git\bank-application" -CheckOnly
+.\scripts\start-sdlc.ps1 -ProjectRoot "D:\git\bank-application" -Goal "幫我補齊查詢功能測試，不要修改產品程式"
+```
+
+Use `-Isolated` when you do not want the default `~/.copilot` personal
+Agents/Skills in the same session; that profile will need its own login.
+Read [cross-project setup, conflicts and scope](cross-project-v07.md).
+The user only supplies an outcome and authorization scope; Orchestrator must
+verify the real Playbook through `sdlc.entrypoint`.
+
+## Framework demo checks
+
 ```bash
 python -m unittest discover -s tests -v
+python -m sdlc.entrypoint doctor --project-root .
+python -m sdlc.entrypoint route --project-root . --goal "新增訂單查詢"
 python -m sdlc.cli validate --task contracts/examples/verification.json
 python -m sdlc.cli plan --task contracts/examples/development.json
 python -m sdlc.cli verify --task contracts/examples/verification.json --output-dir artifacts
 ```
 
-## Read the result
-- `PASS` / exit 0: **only the specified adapter** verified its assertions.
-- `FAIL` / exit 1: check observed state and assertions.
-- `BLOCKED` / exit 2: input is valid but adapter, data, or environment is unavailable.
-- `ERROR` / exit 3: invalid contract or execution runtime problem.
-
-## CLI-assisted run
-```bash
-copilot --agent orchestrator --prompt "Route the test request in contracts/examples/verification.json, validate it, execute safe verification and summarize evidence. No product code changes."
-```
-
-Copilot access and tools require your local GitHub permissions and CLI setup. This command is a **manual launch**, not an unattended GitHub Actions trigger.
+- `PASS` / exit 0: **only the specified adapter** verified assertions.
+- `FAIL` / exit 1: inspected actual failed assertions.
+- `BLOCKED` / exit 2: a prerequisite or authorized real adapter is missing.
+- `ERROR` / exit 3: invalid data or execution problem.
 
 ## Production controls
-Set up repository required checks, code owners and protected environments in GitHub settings separately. Never use unchecked agent-run shell access as a substitute for those controls.
+
+SDLC Worklists are **not** running Agent dispatchers. Test-only tasks must not
+change product code, and synthetic Cucumber demo evidence is **not** proof of
+bank integration. Configure GitHub required checks, CODEOWNERS and protected
+environments separately. Never bypass authorization.

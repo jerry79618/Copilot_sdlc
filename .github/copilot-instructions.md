@@ -1,7 +1,7 @@
 # Repository orientation
 
-Copilot_sdlc is the **SDLC framework**, not a connected Java banking application. Main entry: `orchestrator` + `.github/skills/sdlc-mode/SKILL.md`.
+Copilot_sdlc is the **framework**, never the Java application being changed. Its Playbook source is `playbooks/catalog.json`; it also contains the Python engine `sdlc/` and opt-in launcher `scripts/start-sdlc.ps1`.
 
-Relevant components: `playbooks/catalog.json`, `sdlc/mode.py`, `config/banking-model-policy.json`, `docs/feature-map/`, `cucumber/`, and `tests/`.
+In an explicit SDLC session, the CLI working directory is the **target project**. The Orchestrator must run `python -m sdlc.entrypoint doctor --project-root .` followed by `python -m sdlc.entrypoint route --project-root . --goal "USER GOAL"` before choosing tasks/Skills. If the engine is unavailable, stop rather than inventing a Playbook. Select only stage-relevant Skills. Do not apply the framework's demo Feature Map/Cucumber fixtures as if they describe the target.
 
-Adapt to task complexity rather than loading every Skill. For normal ambiguities, make a reasonable technical choice and explain it. Keep bank privacy, production approvals and verification evidence enforceable through code/CI and organization controls.
+Maintain independent bank rules, approved models, and true runtime evidence. Do not mark unexecuted delegation or simulated tests as real.

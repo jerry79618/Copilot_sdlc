@@ -1,19 +1,18 @@
 ---
 name: sdlc-mode
 description: >
-  Goal-first entry for feature development, bug fixes, verification,
-  investigation, refactoring, review, prototype and multi-phase work.
-  Choose a relevant Playbook, delegate situational Skills and verify results.
+  Explicit SDLC mode for goal-first Java development, testing and investigation.
+  Follow the real central Playbook catalog, not a user-supplied step-by-step recipe.
 ---
 
-# SDLC Mode
+# SDLC Mode (v0.7 cross-project)
 
-1. Start with the **user's goal, done condition and authorization**. Gather enough repository context to choose a sensible approach. Routine design choices are yours to make; reserve questions for financial rules, privileged changes, irreversible operations or genuinely competing product directions.
-2. Choose a Playbook using `python -m sdlc.mode route --goal "GOAL"`, then create or reuse a Task Contract (the agent may assemble routine fields). Check risk via `python -m sdlc.model_policy route --task TASK.json`. Risk flags can increase the level; no unapproved banking model may be invoked.
-3. Start `python -m sdlc.mode start --task TASK.json`. Follow the stage order, loading **only the mapped Skill when needed**. Use `python -m sdlc.mode checkpoint --run RUN.json` to resume a stopped task.
-4. **Lean low-risk:** ordinary stages can be completed without generating a separate evidence file. **Medium:** evidence for baseline, runtime verification and independent review. **High:** preserve full evidence and approved specialist/human review. All tiers must provide real G4 execution evidence for a Playbook that contains G4. `advance --outcome PASS --stage STEP --run RUN.json [--evidence FILE]`.
-5. Inspect Feature Map when behavior or integration is relevant; draft a map when missing, then verify actual behavior. Cucumber Tester can maintain test-scoped Gherkin/Java Steps under a verification task (unless explicitly disabled), without changing product code.
-6. FAIL calls for diagnosis; BLOCKED means state the missing prerequisite and owner. Never pass simulated bank E2E as real. Do not treat a worklist as a running Agent orchestrator or bypass GitHub protection rules.
-7. Finish with actual changes, checks and findings, **decisions made and significant alternatives rejected**, plus any remaining approval or test coverage gaps.
+1. From the **target project root**, first execute `python -m sdlc.entrypoint doctor --project-root .`. If the engine is missing or a user-level Agent/Skill shadows the framework, stop and report the blocker. Launch with `scripts/start-sdlc.ps1 -ProjectRoot TARGET` to supply the framework path and per-session Agent/Skill scope.
+2. Execute `python -m sdlc.entrypoint route --project-root . --goal "USER GOAL"`. This returns the actual catalog path, chosen Playbook and ordered stage-to-Skill bindings. Do not guess the Playbook from a prompt or memory.
+3. Inspect only the Skill file(s) referenced by the **current** Playbook stage. Treat other globally available personal Skills as unrelated unless the actual task requires them. Skills are instructions, not automatic evidence of delegation.
+4. For an authorized task, create or reuse its Task Contract and check `python -m sdlc.model_policy route --task TASK.json` before dispatch. Execute `python -m sdlc.mode start --task TASK.json` to record progress. This engine cannot launch Copilot subagents for you.
+5. Preserve the original user goal and scope; choose routine implementation steps yourself. A test-only task may edit scoped Gherkin, Java Steps or synthetic fixtures unless disabled, never product logic.
+6. Preserve G4 actual verification evidence when its Playbook requires runtime verification. Low risk requires G4, medium G2/G4/G5, and high risk all mandatory evidence and human approval. Missing approved real bank adapter means BLOCKED rather than a forged PASS.
+7. Finish with actual edits, actual test results, independent review outcomes, decisions and significant alternatives. Do not merge/deploy without authorization.
 
-The Worklist engine does not spawn agents. Copilot must actually invoke delegated agents and tests. `/poteto-mode` is a Cursor skill, not a built-in Copilot CLI slash command.
+Copilot CLI requires a real authenticated session and tool permissions. No Cursor plugin or `/poteto-mode` slash command is required.
