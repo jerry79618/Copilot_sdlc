@@ -182,7 +182,7 @@ def propose(goal, project_root=".", upstream_playbook=None):
         "host_status": ("HOST_CAPABILITY_REQUIRED" if original in HOST_DEPENDENT
                         else "SUGGESTION_ONLY"),
         "execution_authorized": False,
-        "human_approval_for_merge": original in PR_ONLY,
+        "human_approval_for_merge": True,
         "verified_work": False,
         "risk_constraints": list(UNSAFE),
         "note": ("Playbook/source discovery and delegation strategy, not a real "

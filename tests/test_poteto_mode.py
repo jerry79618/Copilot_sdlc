@@ -35,7 +35,9 @@ class PotetoModeTests(unittest.TestCase):
             self.assertEqual(result['status'], 'READY')
             mode = result['mode']
             self.assertEqual(mode['name'], 'poteto-mode')
-            self.assertEqual(mode['agent'], 'orchestrator')
+            self.assertEqual(mode['owner'], 'session-main-agent')
+            self.assertEqual(mode['optional_coordinator'], 'orchestrator')
+            self.assertFalse(result['dedicated_orchestrator_required'])
             self.assertTrue(Path(mode['skill_path']).is_file())
             self.assertEqual(mode['legacy_skill'], 'sdlc-mode')
             self.assertIn('poteto-mode', [x['name'] for x in result['source_candidates']])
@@ -44,7 +46,9 @@ class PotetoModeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             result = route('修正查詢錯誤', project_root=d)
             self.assertEqual(result['mode']['name'], 'poteto-mode')
-            self.assertEqual(result['mode']['agent'], 'orchestrator')
+            self.assertEqual(result['mode']['owner'], 'session-main-agent')
+            self.assertEqual(result['mode']['optional_coordinator'], 'orchestrator')
+            self.assertEqual(result['execution_strategy']['owner'], 'current-copilot-session-main-agent')
             self.assertEqual(result['decision']['playbook'], 'bug-fix')
             self.assertEqual(result['pstack_reference']['mode'], 'REFERENCE_ONLY')
             self.assertEqual(len(catalog()), 11)
@@ -75,7 +79,10 @@ class PotetoModeTests(unittest.TestCase):
     def test_old_launcher_delegates_to_new_one(self):
         launcher = (ROOT / 'scripts/start-poteto.ps1').read_text(encoding='utf-8')
         legacy = (ROOT / 'scripts/start-sdlc.ps1').read_text(encoding='utf-8')
+        self.assertIn('$cliArguments = @("--add-dir=$frameworkRoot")', launcher)
+        self.assertIn('if ($UseLegacyOrchestrator)', launcher)
         self.assertIn('--agent=orchestrator', launcher)
+        self.assertIn('Use the /poteto-mode skill', launcher)
         self.assertIn('--add-dir=', launcher)
         self.assertIn('python -m sdlc.entrypoint doctor', launcher)
         self.assertIn('start-poteto.ps1', legacy)
