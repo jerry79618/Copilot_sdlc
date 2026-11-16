@@ -12,6 +12,7 @@ from pathlib import Path
 from .contracts import ContractError, ROOT
 from .mode import catalog, classify
 from .project_context import prepare
+from .pstack_bridge import for_playbook, verify_sources
 
 
 def _root(project_root):
@@ -95,6 +96,7 @@ def doctor(project_root=".", copilot_home=None):
         raise ContractError("Framework Playbook catalog is empty")
     home = Path(copilot_home).expanduser().resolve() if copilot_home else _copilot_home()
     conflicts = _shadow_conflicts(home) + _project_shadow_conflicts(project)
+    bridge_health = verify_sources()
     return {
         "status": "BLOCKED" if conflicts else "READY",
         "project_root": str(project),
@@ -105,6 +107,7 @@ def doctor(project_root=".", copilot_home=None):
         "copilot_home": str(home),
         "shadow_conflicts": conflicts,
         "source_candidates": _source_inventory(project, home),
+        "pstack_vendor_health": bridge_health,
         "note": "Static sources only; actual loaded Agent/Skill, CLI model permissions and delegation are NOT verified.",
     }
 
@@ -134,6 +137,7 @@ def route(goal, project_root="."):
         "framework_root": str(ROOT.resolve()),
         "catalog_path": str((ROOT / "playbooks" / "catalog.json").resolve()),
         "decision": decision,
+        "pstack_reference": for_playbook(decision["playbook"]),
         "playbook_description": selected.get("description", ""),
         "stages": stages,
         "note": "Route is a hint, not permission to edit or proof that agents executed.",
