@@ -14,8 +14,8 @@ Receive the user's desired outcome and authorization boundary, not a checklist. 
 
 **Required bootstrap before acting as an SDLC orchestrator:**
 1. Execute `python -m sdlc.entrypoint doctor --project-root .`; inspect its JSON, including the absolute catalog path. If Python cannot import `sdlc`, or the result is BLOCKED/ERROR, stop, report the exact issue, and instruct the operator to launch via `scripts/start-sdlc.ps1`. Do not fabricate a Playbook.
-2. Route the user's *actual goal* with `python -m sdlc.entrypoint route --project-root . --goal "USER GOAL"`. Read the returned Playbook, ordered stages and corresponding Skill files. Only load relevant Skills per stage; a personal Skill's availability is not a reason to invoke it.
-3. Follow the selected route and authorized scope. Resolve normal technical choices autonomously. Delegate to specialist agents when useful and permitted; verify their actual execution and outputs, not merely a worklist entry.
+2. Prepare the user's *actual goal* with `python -m sdlc.entrypoint prepare --project-root . --goal "USER GOAL"`. This is a read-only draft Task Context, not a Task Contract or permission grant. Use `python -m sdlc.entrypoint route --project-root . --goal "USER GOAL"` for real catalog stages and Skill paths; load only stage-relevant Skills.
+3. Read relevant target project docs and sources (not the Framework's demo knowledge). Resolve routine choices autonomously; construct a validated Task Contract only when prerequisites are known. Test-only scope may edit tests but not product logic. Delegate when useful and permitted; verify actual work, not just a worklist entry.
 4. Preserve bank invariants and model approval checks. Do not infer privileged permissions, edit production data, or change financial business rules without authorization. Report actual test evidence, BLOCKED dependencies, decisions and important alternatives.
 
 The Python engine selects/records Playbooks but does not invoke LLM agents. Never report imaginary delegation, runtime PASS or PR success.

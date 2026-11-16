@@ -11,6 +11,7 @@ from pathlib import Path
 
 from .contracts import ContractError, ROOT
 from .mode import catalog, classify
+from .project_context import prepare
 
 
 def _root(project_root):
@@ -50,13 +51,50 @@ def _shadow_conflicts(home):
     return conflicts
 
 
+def _project_shadow_conflicts(project):
+    """Report project-local files that may override central SDLC definitions."""
+    if project == ROOT.resolve():
+        return []
+    conflicts = []
+    for relative, kind in (
+        (".github/agents/orchestrator.agent.md", "agent"),
+        (".github/skills/sdlc-mode/SKILL.md", "skill"),
+    ):
+        local = project / relative
+        framework = ROOT / relative
+        if local.is_file() and framework.is_file() and local.read_bytes() != framework.read_bytes():
+            conflicts.append({
+                "kind": kind, "path": str(local),
+                "resolution": "Review this project's SDLC override, or use the matching framework version.",
+            })
+    return conflicts
+
+
+def _source_inventory(project, home):
+    results = []
+    for name, relative, user_relative in (
+        ("orchestrator", ".github/agents/orchestrator.agent.md", "agents/orchestrator.agent.md"),
+        ("sdlc-mode", ".github/skills/sdlc-mode/SKILL.md", "skills/sdlc-mode/SKILL.md"),
+    ):
+        options = (("framework", ROOT / relative),
+                   ("user", home / user_relative),
+                   ("project", project / relative))
+        results.append({
+            "name": name,
+            "available_sources": [{"scope": scope, "path": str(p)}
+                                  for scope, p in options if p.is_file()],
+            "effective_source": "NOT_RUNTIME_VERIFIED",
+        })
+    return results
+
+
 def doctor(project_root=".", copilot_home=None):
     project = _root(project_root)
     books = catalog()
     if not books:
         raise ContractError("Framework Playbook catalog is empty")
     home = Path(copilot_home).expanduser().resolve() if copilot_home else _copilot_home()
-    conflicts = _shadow_conflicts(home)
+    conflicts = _shadow_conflicts(home) + _project_shadow_conflicts(project)
     return {
         "status": "BLOCKED" if conflicts else "READY",
         "project_root": str(project),
@@ -66,7 +104,8 @@ def doctor(project_root=".", copilot_home=None):
         "playbook_ids": list(books),
         "copilot_home": str(home),
         "shadow_conflicts": conflicts,
-        "note": "Only a preflight check. Copilot CLI model permission and actual delegation are not verified.",
+        "source_candidates": _source_inventory(project, home),
+        "note": "Static sources only; actual loaded Agent/Skill, CLI model permissions and delegation are NOT verified.",
     }
 
 
@@ -104,14 +143,19 @@ def route(goal, project_root="."):
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Run SDLC bootstrap checks and real Playbook lookup")
     commands = parser.add_subparsers(dest="command", required=True)
-    for name in ("doctor", "route"):
+    for name in ("doctor", "route", "prepare"):
         command = commands.add_parser(name)
         command.add_argument("--project-root", default=".")
-        if name == "route":
+        if name in {"route", "prepare"}:
             command.add_argument("--goal", required=True)
     args = parser.parse_args(argv)
     try:
-        result = doctor(args.project_root) if args.command == "doctor" else route(args.goal, args.project_root)
+        if args.command == "doctor":
+            result = doctor(args.project_root)
+        elif args.command == "route":
+            result = route(args.goal, args.project_root)
+        else:
+            result = prepare(args.goal, args.project_root)
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 2 if result["status"] == "BLOCKED" else 0
     except (ContractError, OSError, ValueError) as exc:
