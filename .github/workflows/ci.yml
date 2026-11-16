@@ -37,6 +37,12 @@ jobs:
         run: |
           python -m sdlc.entrypoint doctor --project-root .
           python -m sdlc.entrypoint route --project-root . --goal "新增訂單查詢"
+      - name: Verify v0.8 project-scoped task context and Feature Maps
+        run: |
+          python -m sdlc.entrypoint prepare --project-root . --goal "補齊測試，不要修改產品程式"
+          python -m sdlc.discovery health --project-root .
+          python -m sdlc.feature_map validate --project-root .
+          python -m sdlc.mode route --goal "補齊 Cucumber 測試，不要修改產品程式碼"
       - name: Validate playbook catalog and route
         run: |
           python -m sdlc.mode catalog

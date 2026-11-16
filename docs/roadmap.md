@@ -61,3 +61,12 @@ Agent Evals, PR and release approvals, rollback and monitoring integrations.
 - [x] Add regression cases for risk escalation, missing G4 proof and test-only permissions.
 - [ ] Verify real authorized Copilot CLI dispatch, enterprise model availability and actual savings with A/B trials.
 - [ ] Enforce bank high-risk release approvals with repository protection and signed external approval artifacts.
+
+## v0.8 — Framework/project boundaries and progressive context
+- [x] Central Playbook catalog remains in Framework; Task/Scenario paths can be scoped to a target Java project.
+- [x] Read-only short-goal Task Context with inventory and unresolved permissions; strict executable contracts remain.
+- [x] Feature Map supports target project and standard Java test feature paths; candidate drafts are project-scoped.
+- [x] Diagnose user-level and project-level Agent/Skill shadow candidates (not runtime attestation).
+- [x] Fix test-only requests with 'do not modify product code' being misrouted to investigation.
+- [ ] Validate authenticated Copilot CLI Agent/Skill resolution on a real bank-approved workstation.
+- [ ] Implement real Java integration test adapters and G4 evidence provenance (proposed for v0.9).

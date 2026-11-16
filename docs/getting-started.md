@@ -5,7 +5,7 @@ Python 3.11+, Git, and GitHub Copilot CLI with a valid authorized account for
 Agent use. No Python package installation is needed when using the v0.7
 PowerShell launcher.
 
-## Launch against a sibling Java repository (Windows)
+## Launch against a sibling Java repository (Windows, v0.8)
 
 ```powershell
 cd D:\git\Copilot_sdlc
@@ -18,6 +18,8 @@ Agents/Skills in the same session; that profile will need its own login.
 Read [cross-project setup, conflicts and scope](cross-project-v07.md).
 The user only supplies an outcome and authorization scope; Orchestrator must
 verify the real Playbook through `sdlc.entrypoint`.
+The v0.8 launcher also runs entrypoint prepare to produce a read-only draft
+Task Context. See [v0.8 migration](cross-project-v08.md).
 
 ## Framework demo checks
 
