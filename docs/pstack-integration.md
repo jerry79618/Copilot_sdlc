@@ -8,10 +8,11 @@
 - License: **MIT**, full upstream notice retained at vendor/pstack/LICENSE.
 - Version manifest: vendor/pstack/MANIFEST.json, with Git blob hashes for every file.
 - The vendored snapshot includes the **original pstack mode, all 23 playbook text files,
-  and 18 selected original method/verification/principle Skill files** (44 imported
-  upstream files total, including LICENSE and plugin.json; the local MANIFEST
-  is an additional provenance file).
-- It is a **curated source reference**, not the full 560-file pstack plugin.
+  all 58 original leaf Skills, original delegate-agent descriptions and key
+  Markdown reference files** (100 imported upstream files total, including
+  LICENSE and plugin.json; the local MANIFEST is an additional provenance file).
+- The source set covers **all original Skill and Playbook texts**, but is
+  **not** the full 560-file pstack plugin with scripts, runtimes and Cursor integrations.
   Original material inside vendor/pstack is left unchanged.
 - This is an independent adaptation for Copilot CLI, not an official pstack release.
 
@@ -26,7 +27,7 @@ config/pstack-bridge.json maps **all eleven** local SDLC Playbook IDs to an
 appropriate pstack playbook and/or principle/verification reference.
 
 sdlc/entrypoint.py now adds pstack_reference to a normal route result.
-The Orchestrator reads the relevant **reference** and translates its general
+The current Copilot session main agent reads the relevant **reference** and translates its general
 engineering guidance to existing Copilot CLI capabilities. This does not
 replace the local stages, Task Contract, approval policy or evidence gates.
 

@@ -5,7 +5,8 @@ param(
     [string]$ProjectRoot,
     [string]$Goal,
     [switch]$CheckOnly,
-    [switch]$Isolated
+    [switch]$Isolated,
+    [switch]$UseLegacyOrchestrator
 )
 
 $ErrorActionPreference = "Stop"
@@ -24,7 +25,13 @@ if (-not $CheckOnly -and -not (Get-Command copilot -ErrorAction SilentlyContinue
 $oldLocation = Get-Location
 $oldPythonPath = $env:PYTHONPATH
 $oldCopilotHome = $env:COPILOT_HOME
+$oldPythonIoEncoding = $env:PYTHONIOENCODING
+$oldPythonUtf8 = $env:PYTHONUTF8
 try {
+    # PowerShell on Windows may launch Python with a legacy charmap codepage.
+    # Force UTF-8 for Chinese goal/status JSON during this launcher session only.
+    $env:PYTHONIOENCODING = "utf-8"
+    $env:PYTHONUTF8 = "1"
     $separator = [IO.Path]::PathSeparator
     $env:PYTHONPATH = if ([string]::IsNullOrEmpty($oldPythonPath)) {
         $frameworkRoot
@@ -49,9 +56,13 @@ try {
         }
     }
     if (-not $CheckOnly) {
-        $cliArguments = @("--agent=orchestrator", "--add-dir=$frameworkRoot")
+        # Main Copilot session owns the workflow; a dedicated coordinator is opt-in.
+        $cliArguments = @("--add-dir=$frameworkRoot")
+        if ($UseLegacyOrchestrator) {
+            $cliArguments += "--agent=orchestrator"
+        }
         if ($PSBoundParameters.ContainsKey("Goal")) {
-            $cliArguments += @("--prompt", $Goal)
+            $cliArguments += @("--prompt", "Use the /poteto-mode skill to accomplish this goal: $Goal")
         }
         & copilot @cliArguments
         if ($LASTEXITCODE -ne 0) {
@@ -63,4 +74,6 @@ finally {
     Set-Location $oldLocation
     $env:PYTHONPATH = $oldPythonPath
     $env:COPILOT_HOME = $oldCopilotHome
+    $env:PYTHONIOENCODING = $oldPythonIoEncoding
+    $env:PYTHONUTF8 = $oldPythonUtf8
 }

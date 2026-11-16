@@ -8,8 +8,9 @@
 ## Poteto Mode — native Copilot CLI entry
 
 The canonical goal-first mode is the **native `poteto-mode` Agent Skill** in
-`.github/skills/poteto-mode/SKILL.md`. The `orchestrator` custom Agent,
-Python `sdlc.mode` engine, eleven Playbooks and bank gates are unchanged.
+`.github/skills/poteto-mode/SKILL.md`. The **Copilot session main agent** owns the Playbook and delivery; the `orchestrator`
+Agent is now an **optional long-program coordinator** (not a default prerequisite).
+The Python `sdlc.mode` API, eleven bank-aware Playbooks and risk gates stay stable.
 This is our own Copilot adaptation, not Lauren Tan's official Cursor Plugin.
 
 ~~~powershell
@@ -29,13 +30,15 @@ aliases. See [Poteto Mode guide](docs/poteto-mode.md).
 ## pstack upstream source integration (v0.8)
 
 Lauren Tan's original pstack material is now available **inside this repo**
-under vendor/pstack/, pinned to upstream version 0.15.42 (MIT). It includes
-the original mode, 23 playbooks, and selected verification and engineering
-Skills as **read-only references**, not automatically registered Copilot Skills.
+under vendor/pstack/, pinned to upstream version 0.15.42 (MIT). The snapshot includes
+**all 23 original Playbooks and 58 original leaf Skill definitions**, plus key reference
+files, original delegate briefs and MIT attribution (100 upstream source files in total).
+The original texts are **on-demand references**, not 58 automatically registered
+Copilot Skills, and not the complete Cursor plugin runtime or external tool binaries.
 
 The existing eleven SDLC Playbooks and bank controls remain authoritative.
 sdlc.entrypoint route returns the matching pstack_reference (exact local file
-paths), so Orchestrator can draw on the original engineering method without
+paths), so the session main agent can apply the original engineering method without
 requiring a new prompt or Cursor plugin. The upstream Cursor-only commands,
 model routing, autopilot and shipping behaviors are not enabled.
 
@@ -46,6 +49,32 @@ python -m sdlc.pstack_bridge route --goal "修正查詢 bug"
 
 See [Upstream integration and MIT attribution](docs/pstack-integration.md).
 This is not an official pstack port and does not add real bank E2E adapters.
+
+## Lauren Tan's core workflow in this Copilot adaptation
+
+**The main Copilot agent receives the goal and owns the Playbook.**
+The strategy selector (`python -m sdlc.poteto_strategy --goal "..."`)
+suggests an original pstack Playbook and any useful delegation, while the
+local regulated Playbook continues to enforce G1–G6, test-only boundaries,
+approved environments and bank model policy.
+
+- Ordinary fixes and investigations: a main agent works directly,
+  establishes actual evidence, and owns results.
+- Cross-boundary features: main agent designs and reviews, delegates
+  independent implementation or verification when suitable and available.
+- Standing multi-PR project: optional **Orchestrate Playbook** and
+  coordinator/worker/verifier topology. No mandatory orchestration for trivial work.
+- Always: understand (`how`/`why`), model the domain, prove behavior,
+  independently assess important changes, reflect/evaluate and encode lessons.
+- Cursor-only `Task`, `/loop`, model overrides, PR autopilot and cloud
+  execution are NOT automatically available in Copilot CLI.
+
+~~~powershell
+python -m sdlc.poteto_strategy --goal "修正申請狀態查詢錯誤" --project-root .
+~~~
+
+See [full Poteto Mode architecture](docs/poteto-mode.md) for capabilities
+and limitations. A selected Playbook is not evidence that work was executed.
 
 ## v0.6 — lean instructions with risk-based enforcement
 

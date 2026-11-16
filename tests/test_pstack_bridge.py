@@ -19,7 +19,7 @@ class PstackIntegrationTests(unittest.TestCase):
     def test_vendored_files_match_original_upstream_blob_hashes(self):
         report = verify_sources()
         self.assertEqual(report["status"], "PASS")
-        self.assertEqual(report["source_files"], 44)
+        self.assertEqual(report["source_files"], 100)
         self.assertEqual(report["upstream_version"], "0.15.42")
         self.assertEqual(len(report["upstream_commit"]), 40)
 

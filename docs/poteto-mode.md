@@ -1,70 +1,104 @@
-# Poteto Mode — Copilot CLI native engineering entry
+# Poteto Mode — Lauren Tan engineering philosophy on Copilot CLI
 
-The current goal-first mode is `.github/skills/poteto-mode/SKILL.md`,
-a **GitHub Copilot Agent Skill**. The `orchestrator` Agent remains responsible
-for orchestration. This is a local Copilot adaptation of Lauren Tan's
-MIT-licensed pstack philosophy; it is **not** the original Cursor plugin.
+The **active Copilot session main agent** receives the user's goal, selects the
+appropriate Playbook, owns the work and the verifier's verdict, and reports evidence.
+It does **not** routinely spawn or require a dedicated `orchestrator` Agent.
+The original `Orchestrate` Playbook is reserved for genuine standing,
+long-running, multi-PR programs.
 
-## Run against your own Java repository
+The canonical skill is `.github/skills/poteto-mode/SKILL.md`.
+The original pstack source is MIT-licensed, pinned under `vendor/pstack/`.
+The 100-file snapshot includes all **23 original Playbooks** and **58
+leaf Skill definitions**, plus core references. It does not include all
+external Cursor scripts/automations or provide identical Cursor behavior.
+
+## The six engineering capabilities
+
+| Capability | Original pstack techniques | Copilot integration |
+| --- | --- | --- |
+| Understand | `how`, `why`, recall, repo history | Inspect code, project Feature Maps, tests and Git evidence |
+| Design | principles, `architect`, `interrogate`, `arena` | Simplify data model, test alternatives, consult independent reviews where available |
+| Execute | selected Playbook, TDD, optional `swarm` | Main agent works directly or delegates scoped work with real available subagents |
+| Verify | verification Skill, Feature Map, runtime drive, evidence | Approved project Cucumber/JUnit/HTTP/DB test adapters; no synthetic bank PASS |
+| Learn | `reflect`, `correct`, Evals, decision trail | Turn recurring failure into code constraints, tests, CI or proven Skill refinements |
+| Deliver | review, CI, PR evidence, concise report | Verify actual diff/checks; protected merges and deployment stay human-authorized |
+
+## Architecture
+
+```text
+User goal
+  -> Copilot main Agent activates Poteto Mode
+      -> inspect real project -> choose local policy Playbook
+      -> recommend original pstack Playbook (23 selectable)
+      -> main agent owns design, implementation review and actual evidence
+          -> simple task: main agent executes directly
+          -> independent tasks: delegate when host supports it
+          -> long multi-PR program: Orchestrate, optional coordinator
+      -> verify real behavior, independently review, reflect/evaluate
+      -> report actual results and blockers
+```
+
+The Python selector does **not** spawn Agents, subscribe to CI or run tests.
+It makes recommendations; the main AI agent may change the chosen original
+Playbook after inspecting the repository, documenting the reason.
+The current eleven SDLC Playbooks remain the **regulated safety skeleton**.
+
+## Launch from Windows PowerShell
 
 ```powershell
 cd D:\git\Copilot_sdlc
+git switch main
+git pull --ff-only
 
-# Check only: no Java repository changes, no Copilot launch
+# Read-only preflight
 .\scripts\start-poteto.ps1 -ProjectRoot "D:\git\bank-application" -CheckOnly
 
-# Start with a short user outcome
-.\scripts\start-poteto.ps1 -ProjectRoot "D:\git\bank-application" -Isolated -Goal "修正申請狀態查詢錯誤"
+# Default: main agent owns workflow, no forced --agent=orchestrator
+.\scripts\start-poteto.ps1 -ProjectRoot "D:\git\bank-application" -Isolated -Goal "幫我修正申請狀態查詢錯誤"
+
+# Optional legacy coordinator for specifically authorized long programs:
+.\scripts\start-poteto.ps1 -ProjectRoot "D:\git\bank-application" -Isolated -UseLegacyOrchestrator -Goal "協調多個 PR 的長期專案"
 ```
 
-Within the Copilot CLI session (with the Framework in `--add-dir`), run:
+The launcher prepends the framework to PYTHONPATH for this process only,
+runs its diagnostics, and adds the Framework to Copilot's Skill discovery.
+No Skills are copied globally and no Java repo is modified during preflight.
 
-```text
-/skills list
-/skills info poteto-mode
-```
+In an authenticated Copilot CLI session, check `/skills info poteto-mode`.
+The Skill can be explicitly referenced in a prompt as `/poteto-mode`.
+This is a **Copilot Agent Skill reference**, not the original Cursor
+Plugin slash command. Copilot CLI can also choose relevant Skills automatically.
 
-You can explicitly invoke a loaded skill with a prompt such as:
-
-> Use the /poteto-mode skill to find gaps in Java query tests and close them. Do not change production code.
-
-Copilot's `/poteto-mode` here is a **Skill reference in the prompt**;
-it is not identical to Cursor's plugin `/poteto-mode` command.
-Skill discovery depends on your Copilot CLI version and active directory.
-
-## Architecture and source priority
-
-- The **canonical** skill is `.github/skills/poteto-mode/SKILL.md`.
-- The **internal Agent** is `.github/agents/orchestrator.agent.md`.
-- The **stable Python API** remains `python -m sdlc.mode` (no migration).
-- The local 11 Playbooks stay in `playbooks/catalog.json`.
-- Original pstack references stay unchanged under `vendor/pstack` and use
-  the pinned MIT license and `sdlc.pstack_bridge`.
-- Target Java project business knowledge and tests remain inside that project.
-- Banking risk restrictions, human approvals and evidence rules override
-  any upstream method. No Cursor-only commands or auto-merge are enabled.
-
-## Backward compatibility
-
-Old `scripts/start-sdlc.ps1` delegates to `start-poteto.ps1`.
-Old `.github/skills/sdlc-mode/SKILL.md` is a small deprecated shim pointing
-to the new canonical Skill. They are not separate modes.
-
-If a user-level or target-repository `poteto-mode`/`sdlc-mode` differs from
-this Framework, the preflight reports a conflicting candidate. Back it up
-rather than overwriting unrelated personal Skills. The optional `-Isolated`
-Copilot profile may need a separate login and is not a security sandbox.
-
-## Checks
+## Confirm the selected methods
 
 ```powershell
-python -m sdlc.entrypoint doctor --project-root "D:\git\bank-application"
-python -m sdlc.entrypoint route --project-root "D:\git\bank-application" --goal "修正查詢錯誤"
 python -m sdlc.pstack_bridge check
+python -m sdlc.poteto_strategy --project-root "D:\git\bank-application" --goal "修正申請狀態查詢錯誤"
+python -m sdlc.entrypoint route --project-root "D:\git\bank-application" --goal "修正申請狀態查詢錯誤"
 python -m unittest discover -s tests -v
 ```
 
-These deterministic checks only verify configuration and routing.
-They do **not** prove Copilot used the skill, dispatched a subagent, or
-executed live bank integration tests. Real G4 remains BLOCKED without
-approved runtime adapters and verifiable test evidence.
+Individual pstack Playbooks can also be inspected explicitly with
+`python -m sdlc.poteto_strategy --goal "..." --upstream-playbook orchestrate`
+(or any of the other 23 original IDs). This **does not execute them**.
+
+## Boundaries and unresolved capabilities
+
+- **Bank policy wins:** project business rules, explicit user permissions,
+  impact/risk checks, model allowlists, G1–G6, protected CI and human approvals.
+- **Live verification:** Feature Maps and test code are knowledge, not PASS.
+  A bank integration G4 must remain BLOCKED until an approved real Adapter
+  produces trustworthy runtime evidence; the included Cucumber Demo is synthetic.
+- **Delegation:** main agent can only delegate if real Copilot subagent tools
+  exist in its session and the model/organization permits them. Python route
+  output is not a delegation transcript or proof of an independent review.
+- **No Cursor emulation claim:** upstream Task/background workers, `/loop`,
+  Cursor plugin installs, `/setup-pstack`, cloud VMs, watcher events,
+  model presets, full autopilot, PR merges and deployments are not supplied
+  as executable capabilities by this migration.
+- **Long work:** work across sessions requires an actual supported task
+  orchestration/continuation mechanism; this Skill alone cannot provide it.
+
+The legacy `.github/skills/sdlc-mode/SKILL.md` and `start-sdlc.ps1`
+still delegate to the canonical mode. `-UseLegacyOrchestrator` explicitly
+restores the previous custom Agent launch for compatibility.
