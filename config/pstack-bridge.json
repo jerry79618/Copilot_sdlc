@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "upstream_commit": "bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7",
+  "upstream_version": "0.15.42",
+  "enabled": true,
+  "mode": "reference-only",
+  "license_path": "vendor/pstack/LICENSE",
+  "source_entrypoint": "skills/poteto-mode/SKILL.md",
+  "disabled_automatic_actions": [
+    "Cursor slash commands",
+    "Cursor plugin installation",
+    "Cursor-only nested agents",
+    "autopilot",
+    "shipping",
+    "babysit",
+    "automatic PR merge",
+    "production deployment",
+    "model selection override"
+  ],
+  "routes": {
+    "feature": {
+      "playbook": "skills/poteto-mode/playbooks/feature.md",
+      "skills": [
+        "skills/tdd/SKILL.md",
+        "skills/create-verification-skill/SKILL.md"
+      ],
+      "principles": [
+        "skills/principle-model-the-domain/SKILL.md",
+        "skills/principle-prove-it-works/SKILL.md"
+      ]
+    },
+    "bug-fix": {
+      "playbook": "skills/poteto-mode/playbooks/bug-fix.md",
+      "skills": [
+        "skills/why/SKILL.md",
+        "skills/maintain-verification-skill/SKILL.md"
+      ],
+      "principles": [
+        "skills/principle-fix-root-causes/SKILL.md",
+        "skills/principle-prove-it-works/SKILL.md"
+      ]
+    },
+    "verification": {
+      "playbook": null,
+      "skills": [
+        "skills/create-verification-skill/SKILL.md",
+        "skills/maintain-verification-skill/SKILL.md",
+        "skills/tdd/SKILL.md"
+      ],
+      "principles": [
+        "skills/principle-test-behavior-not-implementation/SKILL.md",
+        "skills/principle-prove-it-works/SKILL.md"
+      ]
+    },
+    "investigation": {
+      "playbook": "skills/poteto-mode/playbooks/investigation.md",
+      "skills": [
+        "skills/how/SKILL.md",
+        "skills/why/SKILL.md"
+      ],
+      "principles": [
+        "skills/principle-boundary-discipline/SKILL.md",
+        "skills/principle-foundational-thinking/SKILL.md"
+      ]
+    },
+    "refactor": {
+      "playbook": "skills/poteto-mode/playbooks/refactoring.md",
+      "skills": [
+        "skills/tdd/SKILL.md"
+      ],
+      "principles": [
+        "skills/principle-minimize-reader-load/SKILL.md",
+        "skills/principle-test-behavior-not-implementation/SKILL.md"
+      ]
+    },
+    "performance": {
+      "playbook": "skills/poteto-mode/playbooks/perf-issue.md",
+      "skills": [
+        "skills/how/SKILL.md"
+      ],
+      "principles": [
+        "skills/principle-prove-it-works/SKILL.md",
+        "skills/principle-foundational-thinking/SKILL.md"
+      ]
+    },
+    "review": {
+      "playbook": null,
+      "skills": [
+        "skills/no-comments/SKILL.md"
+      ],
+      "principles": [
+        "skills/principle-prove-it-works/SKILL.md",
+        "skills/principle-minimize-reader-load/SKILL.md"
+      ]
+    },
+    "figure-it-out": {
+      "playbook": null,
+      "skills": [
+        "skills/figure-it-out/SKILL.md",
+        "skills/how/SKILL.md"
+      ],
+      "principles": [
+        "skills/principle-foundational-thinking/SKILL.md",
+        "skills/principle-boundary-discipline/SKILL.md"
+      ]
+    },
+    "prototype": {
+      "playbook": "skills/poteto-mode/playbooks/prototype.md",
+      "skills": [
+        "skills/how/SKILL.md"
+      ],
+      "principles": [
+        "skills/principle-outcome-oriented-execution/SKILL.md",
+        "skills/principle-prove-it-works/SKILL.md"
+      ]
+    },
+    "skill-eval": {
+      "playbook": "skills/poteto-mode/playbooks/eval.md",
+      "skills": [
+        "skills/reflect/SKILL.md",
+        "skills/correct/SKILL.md"
+      ],
+      "principles": [
+        "skills/principle-test-behavior-not-implementation/SKILL.md",
+        "skills/principle-prove-it-works/SKILL.md"
+      ]
+    },
+    "multi-phase": {
+      "playbook": "skills/poteto-mode/playbooks/multi-phase-plan.md",
+      "skills": [
+        "skills/reflect/SKILL.md"
+      ],
+      "principles": [
+        "skills/principle-outcome-oriented-execution/SKILL.md",
+        "skills/principle-make-operations-idempotent/SKILL.md"
+      ]
+    }
+  }
+}

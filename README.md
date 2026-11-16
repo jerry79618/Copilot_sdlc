@@ -5,6 +5,27 @@
 > Status: **executable initial scaffold**, not a production-ready autonomous deployment platform. The included three-system journey is a **local, in-memory simulation**. No bank, payment, external API or production integration is configured. This project is an independent implementation inspired by Lauren Tan's verification-first ideas, not an official pstack port.
 
 
+## pstack upstream source integration (v0.8)
+
+Lauren Tan's original pstack material is now available **inside this repo**
+under vendor/pstack/, pinned to upstream version 0.15.42 (MIT). It includes
+the original mode, 23 playbooks, and selected verification and engineering
+Skills as **read-only references**, not automatically registered Copilot Skills.
+
+The existing eleven SDLC Playbooks and bank controls remain authoritative.
+sdlc.entrypoint route returns the matching pstack_reference (exact local file
+paths), so Orchestrator can draw on the original engineering method without
+requiring a new prompt or Cursor plugin. The upstream Cursor-only commands,
+model routing, autopilot and shipping behaviors are not enabled.
+
+~~~powershell
+python -m sdlc.pstack_bridge check
+python -m sdlc.pstack_bridge route --goal "修正查詢 bug"
+~~~
+
+See [Upstream integration and MIT attribution](docs/pstack-integration.md).
+This is not an official pstack port and does not add real bank E2E adapters.
+
 ## v0.6 — lean instructions with risk-based enforcement
 
 The default AI instructions now emphasize **project context, banking invariants and autonomous delivery**, rather than repeating defensive checklists across files. Normal technical decisions can be made autonomously; report key choices and rejected alternatives in the result. GitHub CI, application verification and bank approvals remain separate enforcement mechanisms.

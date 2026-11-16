@@ -70,3 +70,11 @@ Agent Evals, PR and release approvals, rollback and monitoring integrations.
 - [x] Fix test-only requests with 'do not modify product code' being misrouted to investigation.
 - [ ] Validate authenticated Copilot CLI Agent/Skill resolution on a real bank-approved workstation.
 - [ ] Implement real Java integration test adapters and G4 evidence provenance (proposed for v0.9).
+
+## v0.8 pstack upstream method integration
+- [x] Vendor pinned original MIT licensed upstream mode, playbooks, and selected engineering/verification Skills.
+- [x] Keep vendor content outside auto-discoverable framework Skill directories.
+- [x] Map 11 local Playbooks to original references via validated, read-only bridge.
+- [x] Reject vendored source drift and keep bank risk/G4 policy authoritative.
+- [ ] Validate real Copilot CLI reading mapped upstream references on an authorized workstation.
+- [ ] Implement Java runtime verification and authenticated bank integration separately.
