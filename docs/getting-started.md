@@ -9,13 +9,13 @@ PowerShell launcher.
 
 ```powershell
 cd D:\git\Copilot_sdlc
-.\scripts\start-poteto.ps1 -ProjectRoot "D:\git\bank-application" -CheckOnly
-.\scripts\start-poteto.ps1 -ProjectRoot "D:\git\bank-application" -Goal "幫我補齊查詢功能測試，不要修改產品程式"
+.\scripts\start-sdlc.ps1 -ProjectRoot "D:\git\bank-application" -CheckOnly
+.\scripts\start-sdlc.ps1 -ProjectRoot "D:\git\bank-application" -Goal "幫我補齊查詢功能測試，不要修改產品程式"
 ```
 
 Use `-Isolated` when you do not want the default `~/.copilot` personal
 Agents/Skills in the same session; that profile will need its own login.
-Read [Poteto Mode setup](poteto-mode.md) and [cross-project setup](cross-project-v08.md).
+Read [cross-project setup, conflicts and scope](cross-project-v07.md).
 The user only supplies an outcome and authorization scope; Orchestrator must
 verify the real Playbook through `sdlc.entrypoint`.
 The v0.8 launcher also runs entrypoint prepare to produce a read-only draft

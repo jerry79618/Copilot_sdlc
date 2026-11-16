@@ -18,7 +18,6 @@
 ## How it integrates with existing SDLC
 
 The original pstack files live under vendor/pstack, outside .github/skills.
-The separately authored `.github/skills/poteto-mode/SKILL.md` is the canonical Copilot-native mode, not an original upstream file.
 This avoids registering dozens of overlapping global Skills in the default
 Copilot CLI session.
 
@@ -40,7 +39,7 @@ python -m sdlc.entrypoint route --project-root "D:\git\bank-application" --goal 
 A normal SDLC launch is unchanged:
 
 ~~~powershell
-.\scripts\start-poteto.ps1 -ProjectRoot "D:\git\bank-application" -Isolated -Goal "修正申請查詢錯誤"
+.\scripts\start-sdlc.ps1 -ProjectRoot "D:\git\bank-application" -Isolated -Goal "修正申請查詢錯誤"
 ~~~
 
 ## Priority / safety rules
@@ -73,4 +72,4 @@ python -m sdlc.model_policy check
 Check the real Copilot session separately: Python can validate file integrity
 and routing references, but not confirm model availability or actual subagent
 execution. The original Cursor plugin can be used in Cursor; these reference
-files are references for the native Copilot `/poteto-mode` Skill, not a full implementation of the Cursor plugin.
+files are not a drop-in Copilot implementation of /poteto-mode.

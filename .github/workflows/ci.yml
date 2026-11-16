@@ -43,10 +43,6 @@ jobs:
           python -m sdlc.discovery health --project-root .
           python -m sdlc.feature_map validate --project-root .
           python -m sdlc.mode route --goal "補齊 Cucumber 測試，不要修改產品程式碼"
-      - name: Verify canonical Poteto Mode entry
-        run: |
-          python -m sdlc.entrypoint doctor --project-root .
-          python -m sdlc.entrypoint route --project-root . --goal "修正查詢錯誤"
       - name: Verify pinned original pstack and bridge routing
         run: |
           python -m sdlc.pstack_bridge check

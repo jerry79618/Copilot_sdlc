@@ -100,8 +100,6 @@ def classify(goal, intent=None, override=None):
         ))
         chosen = "verification" if test_request and not investigation_only else "investigation"
         reason = "test-only constraint" if chosen == "verification" else "explicit read-only constraint"
-    elif re.search(r"(修正|修復|排除|解決).*(錯誤|異常|問題|失敗)", text):
-        chosen, reason = "bug-fix", "Chinese bug-repair intent"
     elif matched:
         chosen, reason = matched[0][0], "keyword: " + matched[0][1]
     else:
@@ -114,7 +112,7 @@ def classify(goal, intent=None, override=None):
                 raise ContractError("Playbook " + chosen + " conflicts with declared intent " + intent)
             chosen, reason = INTENT_DEFAULTS[intent], "declared intent overrides keywords"
     confidence = ("explicit" if override or read_only or reason.startswith("declared")
-                  else "suggested" if matched or reason == "Chinese bug-repair intent" else "needs-review")
+                  else "suggested" if matched else "needs-review")
     return {
         "playbook": chosen, "intent": books[chosen]["intent"],
         "reason": reason, "confidence": confidence,
