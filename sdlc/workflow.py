@@ -26,7 +26,7 @@ def plan(task, project_root=ROOT):
         "workflow": WORKFLOWS[task["intent"]],
         "environment": task["environment"],
         "code_changes_allowed": task["allow_code_changes"],
-        "test_code_changes_allowed": test_changes_allowed(task),
+        "test_code_changes_allowed": test_changes_allowed(task, project_root=project_root),
         "approval_required": required_approval,
         "model_routing": routing,
         "required_evidence_gates": routing["required_evidence_gates"],

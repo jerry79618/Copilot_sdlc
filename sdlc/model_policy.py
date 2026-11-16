@@ -128,12 +128,13 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Banking risk model planner and policy checker")
     parser.add_argument("command", choices=["route", "check"])
     parser.add_argument("--task", help="Task contract JSON file for route")
+    parser.add_argument("--project-root", default=str(ROOT), help="Root for project-specific scenario paths")
     args = parser.parse_args(argv)
     try:
         if args.command == "route":
             if not args.task:
                 raise ContractError("route requires --task")
-            result = resolve(load_json(args.task))
+            result = resolve(load_json(args.task), project_root=args.project_root)
         else:
             result = check_agents()
         print(json.dumps(result, ensure_ascii=False, indent=2))

@@ -70,6 +70,8 @@ python -m sdlc.mode start --task "D:\git\bank-application\contracts\verification
 python -m sdlc.cli validate --task "D:\git\bank-application\contracts\verification.json" --project-root "D:\git\bank-application"
 ~~~
 
+External-project worklists default to the target project's artifacts/sdlc folder,
+not Framework artifacts, unless an explicit output directory is provided.
 These require an existing real Task Contract and a matching scenario file. The
 generic draft from prepare is not a runnable Task Contract.
 

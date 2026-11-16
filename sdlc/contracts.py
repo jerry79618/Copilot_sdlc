@@ -78,13 +78,13 @@ def validate_task(task, project_root=ROOT):
     return task
 
 
-def test_changes_allowed(task):
+def test_changes_allowed(task, project_root=ROOT):
     """Test-only edits are within verification scope unless explicitly disabled.
 
     This never grants permission to edit product code, real bank data, or
     release controls. A caller must still respect filesystem/tool authority.
     """
-    validate_task(task)
+    validate_task(task, project_root=project_root)
     return task.get("allow_test_changes", task["intent"] in {"verification", "development"})
 
 

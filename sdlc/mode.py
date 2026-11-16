@@ -147,7 +147,7 @@ def make_worklist(task, override=None, project_root=ROOT):
         "approval_required": model_routing["human_approval_required"],
         "model_routing": model_routing,
         "workflow_intensity": {"low": "lean", "medium": "standard", "high": "regulated"}[effective_risk],
-        "test_code_changes_allowed": test_changes_allowed(task),
+        "test_code_changes_allowed": test_changes_allowed(task, project_root=project_root),
         "limitations": [
             "Non-required stages are progress records, not independently verified evidence.",
             "Worklist records completion; it does not execute AI Skills automatically.",
@@ -244,7 +244,7 @@ def run_cli(argv=None):
     s = sub.add_parser("start", help="Create a persistent ordered worklist from a Task Contract")
     s.add_argument("--task", required=True)
     s.add_argument("--playbook")
-    s.add_argument("--output-dir", default="artifacts")
+    s.add_argument("--output-dir", help="Worklist directory; defaults to target artifacts/sdlc for external projects")
     s.add_argument("--project-root", default=str(ROOT), help="Root containing task scenarios; default framework demo")
     q = sub.add_parser("checkpoint", help="Read-only progress snapshot for pause/resume")
     q.add_argument("--run", required=True)
@@ -267,7 +267,11 @@ def run_cli(argv=None):
             task = load_json(args.task)
             run = make_worklist(task, args.playbook, project_root=args.project_root)
             now = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
-            path = Path(args.output_dir) / ("worklist-" + task["id"] + "-" + now + ".json")
+            target_root = Path(args.project_root).resolve()
+            output_root = (Path(args.output_dir) if args.output_dir else
+                           (target_root / "artifacts" / "sdlc" if target_root != ROOT.resolve()
+                            else Path("artifacts")))
+            path = output_root / ("worklist-" + task["id"] + "-" + now + ".json")
             save_json(path, run, exclusive=True)
             result = {"worklist": str(path), "playbook": run["playbook"],
                       "status": run["status"], "next": next_stage(run)}

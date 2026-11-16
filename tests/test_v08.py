@@ -160,6 +160,27 @@ class Version08Tests(unittest.TestCase):
             self.assertTrue(any(item["name"] == "orchestrator"
                                 for item in result["source_candidates"]))
 
+
+    def test_external_worklist_defaults_to_target_artifacts(self):
+        from sdlc.mode import run_cli
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "scenarios").mkdir()
+            (root / "scenarios/manual-review.json").write_text(
+                (ROOT / "scenarios/manual-review.json").read_text()
+            )
+            task = json.loads((ROOT / "contracts/examples/verification.json").read_text())
+            task["risk"] = "low"
+            contract = root / "task.json"
+            contract.write_text(json.dumps(task))
+            with patch("sys.stdout", new_callable=StringIO) as output:
+                self.assertEqual(run_cli([
+                    "start", "--task", str(contract), "--project-root", str(root)
+                ]), 0)
+            payload = json.loads(output.getvalue())
+            self.assertTrue(Path(payload["worklist"]).resolve().is_relative_to(root / "artifacts" / "sdlc"))
+            self.assertTrue(Path(payload["worklist"]).is_file())
+
     def test_entrypoint_prepare_does_not_create_artifacts(self):
         with tempfile.TemporaryDirectory() as tmp:
             with patch("sys.stdout", new_callable=StringIO) as output:
