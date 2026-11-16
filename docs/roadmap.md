@@ -78,3 +78,13 @@ Agent Evals, PR and release approvals, rollback and monitoring integrations.
 - [x] Reject vendored source drift and keep bank risk/G4 policy authoritative.
 - [ ] Validate real Copilot CLI reading mapped upstream references on an authorized workstation.
 - [ ] Implement Java runtime verification and authenticated bank integration separately.
+
+## Poteto Mode — full original engineering philosophy and main-agent ownership
+- [x] Import the original 58 leaf Skills and 23 Playbook texts with pinned upstream hashes and MIT attribution.
+- [x] Default to main-agent ownership; optional custom `orchestrator` only for long multi-PR programs.
+- [x] Strategy maps original methods to local bank Playbook gates while preserving no-fake-evidence and model risk rules.
+- [x] Include six recurring engineering capabilities: understand, design, execute, verify, learn, communicate.
+- [x] Provide original Playbook catalog and test-only/PR shipping safety cases.
+- [ ] Run authenticated Copilot CLI to verify actual Skill discovery and real subagent dispatch on a permitted machine.
+- [ ] Implement approved real Java/Cucumber integration adapters and live G4 evidence.
+- [ ] Validate optional cross-session orchestrated PR monitoring separately; Cursor /loop is not available as-is.

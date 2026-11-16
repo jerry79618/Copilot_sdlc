@@ -1,8 +1,8 @@
 ---
 name: orchestrator
 description: >
-  Own user goal, select a real SDLC Playbook from the framework, delegate by risk,
-  and consolidate verified results without requiring a procedural user prompt.
+  Optional coordinator for standing multi-PR programs under Poteto Mode.
+  Do not use for ordinary small tasks; main Copilot session owns those.
 model: claude-sonnet-5.5
 models: ["claude-sonnet-5.5","claude-opus-5.5"]
 modelPolicy: required

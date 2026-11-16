@@ -103,7 +103,7 @@ record missing capabilities as BLOCKED, not imaginary work.
 `sdlc.mode` is a deterministic contract/worklist engine, not an Agent
 dispatcher. A demo G4 cannot verify real bank staging.
 
-## Copilot CLI entry
+## Copilot CLI entry point
 
 Default: `scripts/start-poteto.ps1 -ProjectRoot TARGET -Goal "outcome"`.
 It adds the Framework directory to the session, then starts the **main
